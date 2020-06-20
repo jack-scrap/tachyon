@@ -24,11 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// data
-	const vtc = [
-		0.0, 0.5,
-		-0.5, -0.5,
-		0.5, -0.5
-	];
+	var
+		vtc = [],
+
+		rot = (Math.PI * 2);
+
+	const n = 3;
+	for (let i = 0; i < n * 2; i += 2) {
+		let inc = i * (rot / n);
+
+		vtc[i] = Math.sin(inc);
+		vtc[i + 1] = Math.cos(inc);
+	}
 
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
