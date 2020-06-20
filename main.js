@@ -89,5 +89,5 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	gl.useProgram(prog);
-	gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 0);
+	gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_BYTE, 0);
 });
