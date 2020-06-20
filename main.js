@@ -34,6 +34,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
+	// index
+	const idc = [
+		0, 1, 2
+	];
+
+	var ibo = gl.createBuffer();
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
+
 	// shader
 	const
 		shadVtxTxt = rd("shad.vs"),
@@ -80,5 +89,5 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	gl.useProgram(prog);
-	gl.drawArrays(gl.TRIANGLES, 0, 3);
+	gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 0);
 });
