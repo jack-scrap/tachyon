@@ -24,31 +24,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// data
-	var
-		vtc = [],
+	var vtc = [
+		-0.5, -0.5, 0.0,
+		0.5, -0.5, 0.0,
+		-0.5, 0.5, 0.0,
 
-		rot = (Math.PI * 2);
-
-	const n = 3;
-	for (let i = 0; i < n * 2; i += 2) {
-		let inc = i * (rot / n);
-
-		vtc[i] = Math.sin(inc);
-		vtc[i + 1] = Math.cos(inc);
-	}
+		-0.5, 0.5, 0.0,
+		0.5, -0.5, 0.0,
+		0.5, 0.5, 0.0
+	];
 
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
-
-	// index
-	const idc = [
-		0, 1, 2
-	];
-
-	var ibo = gl.createBuffer();
-	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// shader
 	const
@@ -88,13 +76,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// attribute
 	var attrPos = gl.getAttribLocation(prog, 'pos');
-	gl.vertexAttribPointer(attrPos, 2, gl.FLOAT, gl.FALSE, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.vertexAttribPointer(attrPos, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrPos);
 
 	// draw
-	gl.clearColor(0, 0, 0, 1.0);
-	gl.clear(gl.COLOR_BUFFER_BIT);
+	var loop = function() {
+		gl.clearColor(0.75, 0.85, 0.8, 1.0);
+		gl.clear(gl.COLOR_BUFFER_BIT);
 
-	gl.useProgram(prog);
-	gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_BYTE, 0);
+		gl.useProgram(prog);
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+		requestAnimationFrame(loop);
+
+		console.log("asdf")
+	};
+	requestAnimationFrame(loop);
 });
