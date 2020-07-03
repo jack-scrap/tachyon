@@ -25,13 +25,47 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// data
 	var vtc = [
-		-0.5, -0.5, -5.0,
-		0.5, -0.5, -5.0,
-		-0.5, 0.5, -5.0,
+		-1.0, -1.0, -1.0,
+		-1.0, -1.0, 1.0, 
+		-1.0, 1.0, 1.0,
+		1.0, 1.0, -1.0,
+		-1.0, -1.0, -1.0, 
+		-1.0, 1.0, -1.0,
 
-		-0.5, 0.5, -5.0,
-		0.5, -0.5, -5.0,
-		0.5, 0.5, -5.0
+		1.0, -1.0, 1.0, 
+		-1.0, -1.0, -1.0, 
+		1.0, -1.0, -1.0, 
+		1.0, 1.0, -1.0, 
+		1.0, -1.0, -1.0, 
+		-1.0, -1.0, -1.0, 
+
+		-1.0, -1.0, -1.0, 
+		-1.0, 1.0, 1.0, 
+		-1.0, 1.0, -1.0, 
+		1.0, -1.0, 1.0, 
+		-1.0, -1.0, 1.0, 
+		-1.0, -1.0, -1.0, 
+
+		-1.0, 1.0, 1.0, 
+		-1.0, -1.0, 1.0, 
+		1.0, -1.0, 1.0, 
+		1.0, 1.0, 1.0, 
+		1.0, -1.0, -1.0, 
+		1.0, 1.0, -1.0, 
+
+		1.0, -1.0, -1.0, 
+		1.0, 1.0, 1.0, 
+		1.0, -1.0, 1.0, 
+		1.0, 1.0, 1.0, 
+		1.0, 1.0, -1.0, 
+		-1.0, 1.0, -1.0, 
+
+		1.0, 1.0, 1.0, 
+		-1.0, 1.0, -1.0, 
+		-1.0, 1.0, 1.0, 
+		1.0, 1.0, 1.0, 
+		-1.0, 1.0, 1.0, 
+		1.0, -1.0, 1.0
 	];
 
 	var vbo = gl.createBuffer();
@@ -89,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	mat4.lookAt(
 		view,
 		[
-			0, 0, 0
+			-2, 0, 0
 		], [
 			0, 0, 0
 		], [
@@ -123,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 		gl.uniformMatrix4fv(uniView, gl.FALSE, view);
 		gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
+		gl.drawArrays(gl.TRIANGLES, 0, vtc.length / 3);
 
 		requestAnimationFrame(loop);
 
