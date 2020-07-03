@@ -109,17 +109,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// matrix
-	var
-		model = new Float32Array(16),
-		view = new Float32Array(16),
-		proj = new Float32Array(16);
+	var model = new Float32Array(16);
 	mat4.identity(model);
-	mat4.identity(view);
-	mat4.identity(proj);
 
 	var matrRot = new Float32Array(16);
 	mat4.identity(matrRot);
 
+	var view = new Float32Array(16);
+	mat4.identity(view);
 	mat4.lookAt(
 		view,
 		[
@@ -131,6 +128,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		]
 	);
 
+	var proj = new Float32Array(16);
+	mat4.identity(proj);
 	mat4.perspective(proj, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
 	// attribute
