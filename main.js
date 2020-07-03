@@ -78,6 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	var model = new Float32Array(16);
 	mat4.identity(model);
 
+	var matrRot = new Float32Array(16);
+	mat4.identity(matrRot);
+
 	// attribute
 	var attrPos = gl.getAttribLocation(prog, 'pos');
 	gl.vertexAttribPointer(attrPos, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -87,9 +90,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	var uniModel = gl.getUniformLocation(prog, 'model');
 
 	// draw
+	var i = 0;
 	var loop = function() {
 		gl.clearColor(0.0, 0.0, 0.0, 1.0);
 		gl.clear(gl.COLOR_BUFFER_BIT);
+
+		mat4.rotate(model, matrRot, (i * Math.PI) / 100, [0, 1, 0]);
 
 		gl.useProgram(prog);
 
@@ -98,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		requestAnimationFrame(loop);
 
-		console.log("asdf")
+		i++;
 	};
 	requestAnimationFrame(loop);
 });
