@@ -74,10 +74,17 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.error('Error validating program', gl.getProgramInfoLog(prog));
 	}
 
+	// matrix
+	var model = new Float32Array(16);
+	mat4.identity(model);
+
 	// attribute
 	var attrPos = gl.getAttribLocation(prog, 'pos');
 	gl.vertexAttribPointer(attrPos, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrPos);
+
+	// uniform
+	var uniModel = gl.getUniformLocation(prog, 'model');
 
 	// draw
 	var loop = function() {
@@ -85,6 +92,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		gl.useProgram(prog);
+
+		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
 
 		requestAnimationFrame(loop);
