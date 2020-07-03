@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// data
 	var vtc = [
-		-0.5, -0.5, 0.0,
-		0.5, -0.5, 0.0,
-		-0.5, 0.5, 0.0,
+		-0.5, -0.5, -5.0,
+		0.5, -0.5, -5.0,
+		-0.5, 0.5, -5.0,
 
-		-0.5, 0.5, 0.0,
-		0.5, -0.5, 0.0,
-		0.5, 0.5, 0.0
+		-0.5, 0.5, -5.0,
+		0.5, -0.5, -5.0,
+		0.5, 0.5, -5.0
 	];
 
 	var vbo = gl.createBuffer();
@@ -75,11 +75,29 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// matrix
-	var model = new Float32Array(16);
+	var
+		model = new Float32Array(16),
+		view = new Float32Array(16),
+		proj = new Float32Array(16);
 	mat4.identity(model);
+	mat4.identity(view);
+	mat4.identity(proj);
 
 	var matrRot = new Float32Array(16);
 	mat4.identity(matrRot);
+
+	mat4.lookAt(
+		view,
+		[
+			0, 0, 0
+		], [
+			0, 0, 0
+		], [
+			0, 1, 0
+		]
+	);
+
+	mat4.perspective(proj, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
 	// attribute
 	var attrPos = gl.getAttribLocation(prog, 'pos');
@@ -87,7 +105,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.enableVertexAttribArray(attrPos);
 
 	// uniform
-	var uniModel = gl.getUniformLocation(prog, 'model');
+	var
+		uniModel = gl.getUniformLocation(prog, 'model'),
+		uniView = gl.getUniformLocation(prog, 'view'),
+		uniProj = gl.getUniformLocation(prog, 'proj');
 
 	// draw
 	var i = 0;
@@ -100,6 +121,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		gl.useProgram(prog);
 
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
+		gl.uniformMatrix4fv(uniView, gl.FALSE, view);
+		gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
 
 		requestAnimationFrame(loop);
