@@ -10,7 +10,7 @@ function rd(name) {
 
 document.addEventListener("DOMContentLoaded", function() {
 	const
-		shadVtxText = rd("shad.vs"),
+		shadVtxTxt = rd("shad.vs"),
 		shadFragTxt = rd("shad.fs");
 
 	const canvas = document.getElementById('disp');
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const shadVtx = gl.createShader(gl.VERTEX_SHADER),
 				shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
 
-	gl.shaderSource(shadVtx, shadVtxText);
+	gl.shaderSource(shadVtx, shadVtxTxt);
 	gl.shaderSource(shadFrag, shadFragTxt);
 
 	gl.compileShader(shadVtx);
