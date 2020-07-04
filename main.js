@@ -107,6 +107,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVtx), gl.STATIC_DRAW);
 
+	// position
+	const attrLoc = gl.getAttribLocation(prog, 'pos');
+	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.enableVertexAttribArray(attrLoc);
+
+	// color
+	const attrCol = gl.getAttribLocation(prog, 'col');
+	gl.vertexAttribPointer(attrCol, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+	gl.enableVertexAttribArray(attrCol);
+
 	// indices
 	const ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
@@ -132,82 +142,51 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
 
-	/* attribute */
-	const
-		attrLoc = gl.getAttribLocation(prog, 'pos'),
-		attrCol = gl.getAttribLocation(prog, 'col');
-
-	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
-	gl.enableVertexAttribArray(attrLoc);
-
-	gl.vertexAttribPointer(attrCol, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
-	gl.enableVertexAttribArray(attrCol);
-
 	gl.useProgram(prog);
 
 	/* matrix */
 	const
-		worldMatrix = new Float32Array(16),
-		viewMatrix = new Float32Array(16),
-		projMatrix = new Float32Array(16);
+		matrModel = new Float32Array(16),
+		view = new Float32Array(16),
+		proj = new Float32Array(16);
 
-	/* uniform */
-	const
-		matWorldUniLoc = gl.getUniformLocation(prog, 'model'),
-		matViewUniLoc = gl.getUniformLocation(prog, 'view'),
-		matProjUniLoc = gl.getUniformLocation(prog, 'proj');
-
-	mat4.identity(worldMatrix);
+	mat4.identity(matrModel);
 	mat4.lookAt(
-		viewMatrix,
+		view,
 		[
 			0, 0, -8
-		],
-		[
+		], [
 			0, 0, 0
-		],
-		[
+		], [
 			0, 1, 0
 		]
 	);
-	mat4.perspective(
-		projMatrix,
-		glMatrix.toRadian(45),
-		canvas.clientWidth / canvas.clientHeight,
-		0.1,
-		1000.0
-	);
-
-	gl.uniformMatrix4fv(
-		matWorldUniLoc,
-		gl.FALSE,
-		worldMatrix
-	);
-	gl.uniformMatrix4fv(
-		matViewUniLoc,
-		gl.FALSE,
-		viewMatrix
-	);
-	gl.uniformMatrix4fv(
-		matProjUniLoc,
-		gl.FALSE,
-		projMatrix
-	);
+	mat4.perspective(proj, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
 	const
-		xRotMatrix = new Float32Array(16),
-		yRotMatrix = new Float32Array(16);
+		matrRotX = new Float32Array(16),
+		matrRotY = new Float32Array(16);
 
-	const idMatrix = new Float32Array(16);
-	mat4.identity(idMatrix);
+	const matrId = new Float32Array(16);
+	mat4.identity(matrId);
+
+	/* uniform */
+	const
+		uniModel = gl.getUniformLocation(prog, 'model'),
+		uniView = gl.getUniformLocation(prog, 'view'),
+		uniProj = gl.getUniformLocation(prog, 'proj');
+
+	gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
+	gl.uniformMatrix4fv(uniView, gl.FALSE, view);
+	gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
 
 	var angle = 0;
 	function loop() {
 		angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-		mat4.rotate(yRotMatrix, idMatrix, angle, [0, 1, 0]);
-		mat4.rotate(xRotMatrix, idMatrix, angle / 4, [1, 0, 0]);
-		mat4.mul(worldMatrix, yRotMatrix, xRotMatrix);
-		gl.uniformMatrix4fv(matWorldUniLoc, gl.FALSE, worldMatrix);
+		mat4.rotate(matrRotY, matrId, angle, [0, 1, 0]);
+		mat4.rotate(matrRotX, matrId, angle / 4, [1, 0, 0]);
+		mat4.mul(matrModel, matrRotY, matrRotX);
+		gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
 
 		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
