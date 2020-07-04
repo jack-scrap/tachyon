@@ -10,20 +10,18 @@ function rd(name) {
 
 document.addEventListener("DOMContentLoaded", function() {
 	// initialize
-	const canvas = document.getElementById('disp');
-	var gl = canvas.getContext('webgl');
+	const canv = document.getElementById('disp');
+	var gl = canv.getContext('webgl');
 
 	if (!gl) {
 		console.log('WebGL not supported, falling back on experimental-webgl');
-		gl = canvas.getContext('experimental-webgl');
+		gl = canv.getContext('experimental-webgl');
 	}
 
 	if (!gl) {
 		alert('Your browser does not support WebGL');
 	}
 
-	// background
-	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.enable(gl.DEPTH_TEST);
 
 	// shader
@@ -31,28 +29,27 @@ document.addEventListener("DOMContentLoaded", function() {
 		shadVtxTxt = rd("shad.vs"),
 		shadFragTxt = rd("shad.fs");
 
+	// vertex
 	const shadVtx = gl.createShader(gl.VERTEX_SHADER);
 	gl.shaderSource(shadVtx, shadVtxTxt);
 
-	const shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
-	gl.shaderSource(shadFrag, shadFragTxt);
-
 	gl.compileShader(shadVtx);
-	if (!gl.getShaderParameter(shadVtx, gl.COMPILE_STATUS)
-	) {
+	if (!gl.getShaderParameter(shadVtx, gl.COMPILE_STATUS)) {
 		console.error('Error compiling vertex shader', gl.getShaderInfoLog(shadVtx));
 	}
 
+	// fragment
+	const shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(shadFrag, shadFragTxt);
+
 	gl.compileShader(shadFrag);
-	if (!gl.getShaderParameter(shadFrag, gl.COMPILE_STATUS)
-	) {
+	if (!gl.getShaderParameter(shadFrag, gl.COMPILE_STATUS)) {
 		console.error('Error compiling fragment shader', gl.getShaderInfoLog(shadFrag));
 	}
 
 	// program
 	const prog = gl.createProgram();
 
-	// shader
 	gl.attachShader(prog, shadVtx);
 	gl.attachShader(prog, shadFrag);
 
@@ -65,6 +62,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	if (!gl.getProgramParameter(prog, gl.VALIDATE_STATUS)) {
 		console.error('Error validating program', gl.getProgramInfoLog(prog));
 	}
+
+	gl.useProgram(prog);
 
 	// VBO
 	const vbo = gl.createBuffer();
@@ -99,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
 		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
 		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-		1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, -1.0, 0.5, 0.5, 1.0
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
@@ -138,15 +137,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
 
-	gl.useProgram(prog);
-
 	// matrix
 	const
-		matrModel = new Float32Array(16),
+		model = new Float32Array(16),
 		view = new Float32Array(16),
 		proj = new Float32Array(16);
 
-	mat4.identity(matrModel);
+	mat4.identity(model);
 	mat4.lookAt(
 		view,
 		[
@@ -157,11 +154,12 @@ document.addEventListener("DOMContentLoaded", function() {
 			0, 1, 0
 		]
 	);
-	mat4.perspective(proj, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
+	mat4.perspective(proj, (1 / 4) * Math.PI, canv.clientWidth / canv.clientHeight, 0.1, 1000.0);
 
-	const rot = new Float32Array(16);
+	const
+		id = new Float32Array(16),
+		rot = new Float32Array(16);
 
-	const id = new Float32Array(16);
 	mat4.identity(id);
 
 	// uniform
@@ -170,25 +168,25 @@ document.addEventListener("DOMContentLoaded", function() {
 		uniView = gl.getUniformLocation(prog, 'view'),
 		uniProj = gl.getUniformLocation(prog, 'proj');
 
-	gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
+	gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 	gl.uniformMatrix4fv(uniView, gl.FALSE, view);
 	gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
 
 	var i = 0;
-	function loop() {
-		mat4.rotate(rot, id, i, [0, 1, 0]);
-		mat4.mul(matrModel, rot, id);
-		gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
-
+	function draw() {
 		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+
+		mat4.rotate(rot, id, i, [0, 1, 0]);
+		mat4.mul(model, rot, id);
+		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 
 		gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_SHORT, 0);
 
 		i += 0.01;
 
-		requestAnimationFrame(loop);
+		requestAnimationFrame(draw);
 	};
 
-	requestAnimationFrame(loop);
+	requestAnimationFrame(draw);
 });
