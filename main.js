@@ -28,14 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	// background
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.enable(gl.DEPTH_TEST);
-	gl.enable(gl.CULL_FACE);
-
-	gl.frontFace(gl.CCW);
-	gl.cullFace(gl.BACK);
 
 	// shader
-	const shadVtx = gl.createShader(gl.VERTEX_SHADER),
-				shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
+	const
+		shadVtx = gl.createShader(gl.VERTEX_SHADER),
+		shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
 
 	gl.shaderSource(shadVtx, shadVtxTxt);
 	gl.shaderSource(shadFrag, shadFragTxt);
