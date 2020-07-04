@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
 	var norm = [];
-	for (let i = 0; i < 3; i += 3) {
+	for (let i = 0; i < idc.length - 3; i += 3) {
 		let start = idc[i];
 
 		// get indices of points
@@ -173,12 +173,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		let prod = vec3.create();
 		vec3.cross(prod, edge0, edge1);
+		vec3.normalize(prod, prod);
 
 		norm.push(prod[0]);
 		norm.push(prod[1]);
 		norm.push(prod[2]);
 	}
-	gl.enableVertexAttribArray(nbo);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
+
+	// normal
+	const attrNorm = gl.getAttribLocation(prog, 'norm');
+	gl.vertexAttribPointer(attrNorm, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.enableVertexAttribArray(attrNorm);
 
 	// matrix
 	const

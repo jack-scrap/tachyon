@@ -1,6 +1,8 @@
 precision mediump float;
 
-attribute vec3 pos;
+attribute vec3
+	pos,
+	norm;
 
 uniform mat4
 	model,
@@ -8,9 +10,11 @@ uniform mat4
 	proj;
 
 varying vec3 _pos;
+varying vec3 _norm;
 
 void main() {
 	gl_Position = proj * view * model * vec4(pos, 1.0);
 
 	_pos = pos;
+	_norm = norm;
 }
