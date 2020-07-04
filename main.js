@@ -174,8 +174,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		gl.STATIC_DRAW
 	);
 
-	const posAttrLoc = gl.getAttribLocation(prog, 'vertPosition'),
-				colAttrLoc = gl.getAttribLocation(prog, 'vertColor');
+	const posAttrLoc = gl.getAttribLocation(prog, 'pos'),
+				colAttrLoc = gl.getAttribLocation(prog, 'col');
 	gl.vertexAttribPointer(
 		posAttrLoc, // attribute location
 		3, // number of elements per attribute
