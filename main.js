@@ -9,11 +9,7 @@ function rd(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-	const
-		shadVtxTxt = rd("shad.vs"),
-		shadFragTxt = rd("shad.fs");
-
-	/ * initialize */
+	// initialize
 	const canvas = document.getElementById('disp');
 	var gl = canvas.getContext('webgl');
 
@@ -32,24 +28,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// shader
 	const
-		shadVtx = gl.createShader(gl.VERTEX_SHADER),
-		shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
+		shadVtxTxt = rd("shad.vs"),
+		shadFragTxt = rd("shad.fs");
 
+	const shadVtx = gl.createShader(gl.VERTEX_SHADER);
 	gl.shaderSource(shadVtx, shadVtxTxt);
+
+	const shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
 	gl.shaderSource(shadFrag, shadFragTxt);
 
 	gl.compileShader(shadVtx);
-	if (!gl.getShaderParameter(
-		shadVtx,
-		gl.COMPILE_STATUS)
+	if (!gl.getShaderParameter(shadVtx, gl.COMPILE_STATUS)
 	) {
 		console.error('Error compiling vertex shader', gl.getShaderInfoLog(shadVtx));
 	}
 
 	gl.compileShader(shadFrag);
-	if (!gl.getShaderParameter(
-		shadFrag,
-		gl.COMPILE_STATUS)
+	if (!gl.getShaderParameter(shadFrag, gl.COMPILE_STATUS)
 	) {
 		console.error('Error compiling fragment shader', gl.getShaderInfoLog(shadFrag));
 	}
@@ -57,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// program
 	const prog = gl.createProgram();
 
+	// shader
 	gl.attachShader(prog, shadVtx);
 	gl.attachShader(prog, shadFrag);
 
@@ -70,11 +66,11 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.error('Error validating program', gl.getProgramInfoLog(prog));
 	}
 
-	// vertex
+	// VBO
 	const vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	const boxVtx = [
+	const vtc = [
 		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
 		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
 		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
@@ -105,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
 		1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
 	];
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVtx), gl.STATIC_DRAW);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// position
 	const attrLoc = gl.getAttribLocation(prog, 'pos');
@@ -144,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	gl.useProgram(prog);
 
-	/* matrix */
+	// matrix
 	const
 		matrModel = new Float32Array(16),
 		view = new Float32Array(16),
@@ -163,14 +159,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	);
 	mat4.perspective(proj, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
-	const
-		matrRotX = new Float32Array(16),
-		matrRot = new Float32Array(16);
+	const rot = new Float32Array(16);
 
-	const matrId = new Float32Array(16);
-	mat4.identity(matrId);
+	const id = new Float32Array(16);
+	mat4.identity(id);
 
-	/* uniform */
+	// uniform
 	const
 		uniModel = gl.getUniformLocation(prog, 'model'),
 		uniView = gl.getUniformLocation(prog, 'view'),
@@ -182,8 +176,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	var i = 0;
 	function loop() {
-		mat4.rotate(matrRot, matrId, i, [0, 1, 0]);
-		mat4.mul(matrModel, matrRot, matrId);
+		mat4.rotate(rot, id, i, [0, 1, 0]);
+		mat4.mul(matrModel, rot, id);
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
 
 		gl.clearColor(0, 0, 0, 1.0);
