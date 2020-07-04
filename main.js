@@ -70,47 +70,42 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
 	const vtc = [
-		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
-		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-		1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+		-1.0, 1.0, -1.0,
+		-1.0, 1.0, 1.0,
+		1.0, 1.0, 1.0,
+		1.0, 1.0, -1.0,
 
-		-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
-		-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
-		-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
-		-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
+		-1.0, 1.0, 1.0,
+		-1.0, -1.0, 1.0,
+		-1.0, -1.0, -1.0,
+		-1.0, 1.0, -1.0,
 
-		1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
-		1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
-		1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
-		1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
+		1.0, 1.0, 1.0,
+		1.0, -1.0, 1.0,
+		1.0, -1.0, -1.0,
+		1.0, 1.0, -1.0,
 
-		1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
-		1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-		-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-		-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		1.0, 1.0, 1.0,
+		1.0, -1.0, 1.0,
+		-1.0, -1.0, 1.0,
+		-1.0, 1.0, 1.0,
 
-		1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
-		1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-		-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-		-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		1.0, 1.0, -1.0,
+		1.0, -1.0, -1.0,
+		-1.0, -1.0, -1.0,
+		-1.0, 1.0, -1.0,
 
-		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
-		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-		1.0, -1.0, -1.0, 0.5, 0.5, 1.0
+		-1.0, -1.0, -1.0,
+		-1.0, -1.0, 1.0,
+		1.0, -1.0, 1.0,
+		1.0, -1.0, -1.0
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// position
 	const attrLoc = gl.getAttribLocation(prog, 'pos');
-	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrLoc);
-
-	// color
-	const attrCol = gl.getAttribLocation(prog, 'col');
-	gl.vertexAttribPointer(attrCol, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
-	gl.enableVertexAttribArray(attrCol);
 
 	// indices
 	const ibo = gl.createBuffer();
