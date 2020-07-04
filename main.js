@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		shadVtxTxt = rd("shad.vs"),
 		shadFragTxt = rd("shad.fs");
 
+	/ * initialize */
 	const canvas = document.getElementById('disp');
 	var gl = canvas.getContext('webgl');
 
@@ -83,66 +84,53 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// vertex
 	const boxVtx = [
-		// X, Y, Z         R, G, B
-		// top
 		-1.0, 1.0, -1.0,   0.5, 0.5, 0.5,
 		-1.0, 1.0, 1.0,    0.5, 0.5, 0.5,
 		1.0, 1.0, 1.0,     0.5, 0.5, 0.5,
 		1.0, 1.0, -1.0,    0.5, 0.5, 0.5,
 
-		// left
 		-1.0, 1.0, 1.0,    0.75, 0.25, 0.5,
 		-1.0, -1.0, 1.0,   0.75, 0.25, 0.5,
 		-1.0, -1.0, -1.0,  0.75, 0.25, 0.5,
 		-1.0, 1.0, -1.0,   0.75, 0.25, 0.5,
 
-		// right
 		1.0, 1.0, 1.0,    0.25, 0.25, 0.75,
 		1.0, -1.0, 1.0,   0.25, 0.25, 0.75,
 		1.0, -1.0, -1.0,  0.25, 0.25, 0.75,
 		1.0, 1.0, -1.0,   0.25, 0.25, 0.75,
 
-		// front
 		1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
 		1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
 		-1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
 		-1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
 
-		// back
 		1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
 		1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
 		-1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
 		-1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
 
-		// bottom
 		-1.0, -1.0, -1.0,   0.5, 0.5, 1.0,
 		-1.0, -1.0, 1.0,    0.5, 0.5, 1.0,
 		1.0, -1.0, 1.0,     0.5, 0.5, 1.0,
 		1.0, -1.0, -1.0,    0.5, 0.5, 1.0,
 	];
 
-	const boxIdc = [
-		// top
+	const idc = [
 		0, 1, 2,
 		0, 2, 3,
 
-		// left
 		5, 4, 6,
 		6, 4, 7,
 
-		// right
 		8, 9, 10,
 		8, 10, 11,
 
-		// front
 		13, 12, 14,
 		15, 14, 12,
 
-		// back
 		16, 17, 18,
 		16, 18, 19,
 
-		// bottom
 		21, 20, 22,
 		22, 20, 23
 	];
@@ -167,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		idcBuff
 	);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-		new Uint16Array(boxIdc),
+		new Uint16Array(idc),
 		gl.STATIC_DRAW
 	);
 
@@ -195,13 +183,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	gl.useProgram(prog);
 
-	const matWorldUniLoc = gl.getUniformLocation(prog, 'model'),
-				matViewUniLoc = gl.getUniformLocation(prog, 'view'),
-				matProjUniLoc = gl.getUniformLocation(prog, 'proj'),
+	/* matrix */
+	const
+	worldMatrix = new Float32Array(16),
+		viewMatrix = new Float32Array(16),
+		projMatrix = new Float32Array(16);
 
-				worldMatrix = new Float32Array(16),
-				viewMatrix = new Float32Array(16),
-				projMatrix = new Float32Array(16);
+	const
+		matWorldUniLoc = gl.getUniformLocation(prog, 'model'),
+		matViewUniLoc = gl.getUniformLocation(prog, 'view'),
+		matProjUniLoc = gl.getUniformLocation(prog, 'proj');
 
 	mat4.identity(worldMatrix);
 	mat4.lookAt(
@@ -240,8 +231,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		projMatrix
 	);
 
-	const xRotMatrix = new Float32Array(16),
-				yRotMatrix = new Float32Array(16);
+	const
+		xRotMatrix = new Float32Array(16),
+		yRotMatrix = new Float32Array(16);
 
 	const idMatrix = new Float32Array(16);
 	mat4.identity(idMatrix);
@@ -249,42 +241,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	var angle = 0;
 	function loop() {
 		angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-		mat4.rotate(
-			yRotMatrix,
-			idMatrix,
-			angle,
-			[0, 1, 0]
-		);
-		mat4.rotate(
-			xRotMatrix,
-			idMatrix,
-			angle / 4,
-			[1, 0, 0]
-		);
-		mat4.mul(
-			worldMatrix,
-			yRotMatrix,
-			xRotMatrix
-		);
-		gl.uniformMatrix4fv(
-			matWorldUniLoc,
-			gl.FALSE,
-			worldMatrix
-		);
+		mat4.rotate(yRotMatrix, idMatrix, angle, [0, 1, 0]);
+		mat4.rotate(xRotMatrix, idMatrix, angle / 4, [1, 0, 0]);
+		mat4.mul(worldMatrix, yRotMatrix, xRotMatrix);
+		gl.uniformMatrix4fv(matWorldUniLoc, gl.FALSE, worldMatrix);
 
-		gl.clearColor(
-			0,
-			0,
-			0,
-			1.0
-		);
+		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
-		gl.drawElements(
-			gl.TRIANGLES,
-			boxIdc.length,
-			gl.UNSIGNED_SHORT,
-			0
-		);
+
+		gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_SHORT, 0);
 
 		requestAnimationFrame(loop);
 	};
