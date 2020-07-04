@@ -198,9 +198,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	gl.useProgram(prog);
 
-	const matWorldUniLoc = gl.getUniformLocation(prog, 'mWorld'),
-				matViewUniLoc = gl.getUniformLocation(prog, 'mView'),
-				matProjUniLoc = gl.getUniformLocation(prog, 'mProj'),
+	const matWorldUniLoc = gl.getUniformLocation(prog, 'model'),
+				matViewUniLoc = gl.getUniformLocation(prog, 'view'),
+				matProjUniLoc = gl.getUniformLocation(prog, 'proj'),
 
 				worldMatrix = new Float32Array(16),
 				viewMatrix = new Float32Array(16),

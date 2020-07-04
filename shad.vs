@@ -6,12 +6,12 @@ attribute vec3 col;
 varying vec3 _col;
 
 uniform mat4
-	mWorld,
-	mView,
-	mProj;
+	model,
+	view,
+	proj;
 
 void main() {
-	_col = col;
+	gl_Position = proj * view * model * vec4(pos, 1.0);
 
-	gl_Position = mProj * mView * mWorld * vec4(pos, 1.0);
+	_col = col;
 }
