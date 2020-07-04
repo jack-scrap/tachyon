@@ -9,8 +9,9 @@ uniform mat4
 	view,
 	proj;
 
-varying vec3 _pos;
-varying vec3 _norm;
+varying vec3
+	_pos,
+	_norm;
 
 void main() {
 	gl_Position = proj * view * model * vec4(pos, 1.0);
