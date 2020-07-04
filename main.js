@@ -1,29 +1,17 @@
-document.addEventListener("DOMContentLoaded", function() {
-	const shadVtxText = [
-		"precision mediump float;",
-		"",
-		"attribute vec3 vertPosition;",
-		"attribute vec3 vertColor;",
-		"varying vec3 fragColor;",
-		"",
-		"uniform mat4 mWorld;",
-		"uniform mat4 mView;",
-		"uniform mat4 mProj;",
-		"",
-		"void main() {",
-		"  fragColor = vertColor;",
-		"  gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);",
-		"}"
-	].join("\n");
+function rd(name) {
+	var req = new XMLHttpRequest();
+	req.open('GET', name, false);
+	req.send(null);
 
-			shadFragTxt = [
-		"precision mediump float;",
-		"",
-		"varying vec3 fragColor;",
-		"void main() {",
-		"  gl_FragColor = vec4(fragColor, 1.0);",
-		"}"
-	].join("\n");
+	if (req.status == 200) {
+		return req.responseText;
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+	const
+		shadVtxText = rd("shad.vs"),
+		shadFragTxt = rd("shad.fs");
 
 	const canvas = document.getElementById('disp');
 	var gl = canvas.getContext('webgl');
