@@ -132,6 +132,54 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
 
+	// normal
+	const nbo = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
+
+	var norm = [];
+	for (let i = 0; i < 3; i += 3) {
+		let start = idc[i];
+
+		// get indices of points
+		let
+			idxA = start * 3,
+			idxB = (start + 1) * 3,
+			idxC = (start + 2) * 3;
+
+		// get points
+		let
+			a = [
+				vtc[idxA],
+				vtc[idxA + 1],
+				vtc[idxA + 2]
+			],
+			b = [
+				vtc[idxB],
+				vtc[idxB + 1],
+				vtc[idxB + 2]
+			],
+			c = [
+				vtc[idxC],
+				vtc[idxC + 1],
+				vtc[idxC + 2]
+			];
+
+		// calculate
+		let edge0 = vec3.create();
+		vec3.sub(edge0, b, c);
+
+		let edge1 = vec3.create();
+		vec3.sub(edge1, b, a);
+
+		let prod = vec3.create();
+		vec3.cross(prod, edge0, edge1);
+
+		norm.push(prod[0]);
+		norm.push(prod[1]);
+		norm.push(prod[2]);
+	}
+	gl.enableVertexAttribArray(nbo);
+
 	// matrix
 	const
 		model = new Float32Array(16),
