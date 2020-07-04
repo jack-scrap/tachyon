@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	mat4.lookAt(
 		view,
 		[
-			0, 0, -8
+			0, 5, -5
 		], [
 			0, 0, 0
 		], [
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	const
 		matrRotX = new Float32Array(16),
-		matrRotY = new Float32Array(16);
+		matrRot = new Float32Array(16);
 
 	const matrId = new Float32Array(16);
 	mat4.identity(matrId);
@@ -180,18 +180,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.uniformMatrix4fv(uniView, gl.FALSE, view);
 	gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
 
-	var angle = 0;
+	var i = 0;
 	function loop() {
-		angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-		mat4.rotate(matrRotY, matrId, angle, [0, 1, 0]);
-		mat4.rotate(matrRotX, matrId, angle / 4, [1, 0, 0]);
-		mat4.mul(matrModel, matrRotY, matrRotX);
+		mat4.rotate(matrRot, matrId, i, [0, 1, 0]);
+		mat4.mul(matrModel, matrRot, matrId);
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, matrModel);
 
 		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 
 		gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_SHORT, 0);
+
+		i += 0.01;
 
 		requestAnimationFrame(loop);
 	};
