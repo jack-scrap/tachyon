@@ -165,14 +165,14 @@ document.addEventListener("DOMContentLoaded", function() {
 			];
 
 		// calculate
-		let edge0 = vec3.create();
-		vec3.sub(edge0, b, c);
+		let v0 = vec3.create();
+		vec3.sub(v0, b, c);
 
-		let edge1 = vec3.create();
-		vec3.sub(edge1, b, a);
+		let v1 = vec3.create();
+		vec3.sub(v1, b, a);
 
 		let prod = vec3.create();
-		vec3.cross(prod, edge0, edge1);
+		vec3.cross(prod, v0, v1);
 		vec3.normalize(prod, prod);
 
 		norm.push(prod[0]);
