@@ -57,63 +57,59 @@ document.addEventListener("DOMContentLoaded", function() {
 	// program
 	const prog = gl.createProgram();
 
-	gl.attachShader(
-		prog,
-		shadVtx
-	);
-	gl.attachShader(
-		prog,
-		shadFrag
-	);
+	gl.attachShader(prog, shadVtx);
+	gl.attachShader(prog, shadFrag);
 
 	gl.linkProgram(prog);
-	if (!gl.getProgramParameter(
-		prog,
-		gl.LINK_STATUS
-	)) {
+	if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
 		console.error('Error linking program', gl.getProgramInfoLog(prog));
 	}
 
 	gl.validateProgram(prog);
-	if (!gl.getProgramParameter(
-		prog,
-		gl.VALIDATE_STATUS
-	)) {
+	if (!gl.getProgramParameter(prog, gl.VALIDATE_STATUS)) {
 		console.error('Error validating program', gl.getProgramInfoLog(prog));
 	}
 
 	// vertex
+	const vbo = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+
 	const boxVtx = [
-		-1.0, 1.0, -1.0,   0.5, 0.5, 0.5,
-		-1.0, 1.0, 1.0,    0.5, 0.5, 0.5,
-		1.0, 1.0, 1.0,     0.5, 0.5, 0.5,
-		1.0, 1.0, -1.0,    0.5, 0.5, 0.5,
+		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
 
-		-1.0, 1.0, 1.0,    0.75, 0.25, 0.5,
-		-1.0, -1.0, 1.0,   0.75, 0.25, 0.5,
-		-1.0, -1.0, -1.0,  0.75, 0.25, 0.5,
-		-1.0, 1.0, -1.0,   0.75, 0.25, 0.5,
+		-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
+		-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
 
-		1.0, 1.0, 1.0,    0.25, 0.25, 0.75,
-		1.0, -1.0, 1.0,   0.25, 0.25, 0.75,
-		1.0, -1.0, -1.0,  0.25, 0.25, 0.75,
-		1.0, 1.0, -1.0,   0.25, 0.25, 0.75,
+		1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
+		1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
 
-		1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
-		1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-		-1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-		-1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
+		1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
 
-		1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
-		1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-		-1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-		-1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
+		1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
 
-		-1.0, -1.0, -1.0,   0.5, 0.5, 1.0,
-		-1.0, -1.0, 1.0,    0.5, 0.5, 1.0,
-		1.0, -1.0, 1.0,     0.5, 0.5, 1.0,
-		1.0, -1.0, -1.0,    0.5, 0.5, 1.0,
+		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
+		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
 	];
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVtx), gl.STATIC_DRAW);
+
+	// indices
+	const ibo = gl.createBuffer();
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
 	const idc = [
 		0, 1, 2,
@@ -134,61 +130,28 @@ document.addEventListener("DOMContentLoaded", function() {
 		21, 20, 22,
 		22, 20, 23
 	];
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
 
-	// buffer
-	// vertex
-	const vtxBuff = gl.createBuffer();
-	gl.bindBuffer(
-		gl.ARRAY_BUFFER,
-		vtxBuff
-	);
-	gl.bufferData(
-		gl.ARRAY_BUFFER,
-		new Float32Array(boxVtx),
-		gl.STATIC_DRAW
-	);
+	/* attribute */
+	const
+		attrLoc = gl.getAttribLocation(prog, 'pos'),
+		attrCol = gl.getAttribLocation(prog, 'col');
 
-	// indices
-	const idcBuff = gl.createBuffer();
-	gl.bindBuffer(
-		gl.ELEMENT_ARRAY_BUFFER,
-		idcBuff
-	);
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-		new Uint16Array(idc),
-		gl.STATIC_DRAW
-	);
+	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.enableVertexAttribArray(attrLoc);
 
-	const posAttrLoc = gl.getAttribLocation(prog, 'pos'),
-				colAttrLoc = gl.getAttribLocation(prog, 'col');
-	gl.vertexAttribPointer(
-		posAttrLoc, // attribute location
-		3, // number of elements per attribute
-		gl.FLOAT, // type of elements
-		gl.FALSE,
-		6 * Float32Array.BYTES_PER_ELEMENT, // size of an individual vertex
-		0 // offset from the beginning of a single vertex to this attribute
-	);
-	gl.vertexAttribPointer(
-		colAttrLoc, // attribute location
-		3, // number of elements per attribute
-		gl.FLOAT, // type of elements
-		gl.FALSE,
-		6 * Float32Array.BYTES_PER_ELEMENT, // size of an individual vertex
-		3 * Float32Array.BYTES_PER_ELEMENT // offset from the beginning of a single vertex to this attribute
-	);
-
-	gl.enableVertexAttribArray(posAttrLoc);
-	gl.enableVertexAttribArray(colAttrLoc);
+	gl.vertexAttribPointer(attrCol, 3, gl.FLOAT, gl.FALSE, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+	gl.enableVertexAttribArray(attrCol);
 
 	gl.useProgram(prog);
 
 	/* matrix */
 	const
-	worldMatrix = new Float32Array(16),
+		worldMatrix = new Float32Array(16),
 		viewMatrix = new Float32Array(16),
 		projMatrix = new Float32Array(16);
 
+	/* uniform */
 	const
 		matWorldUniLoc = gl.getUniformLocation(prog, 'model'),
 		matViewUniLoc = gl.getUniformLocation(prog, 'view'),
