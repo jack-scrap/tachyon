@@ -1,7 +1,7 @@
 precision mediump float;
 
 vec3
-	posLight = vec3(3.0, 3.0, 3.0),
+	posLight = vec3(-1.0, -1.0, -1.0),
 	colLight = vec3(1.0),
 	colObj = vec3(1.0);
 
