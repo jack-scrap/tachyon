@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const triVtc = 3;
 	let norm1 = [];
 	for (let t = 0; t < cnt * triVtc; t += triVtc) {
-		let norm = calcNorm(t, vtc);
+		let norm = calcNorm(vtc, t);
 
 		for (let _ = 0; _ < 3; _++) {
 			norm1.push(norm[0]);
