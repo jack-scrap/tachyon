@@ -11,10 +11,12 @@ function rd(name) {
 function calcNorm(i, vtc) {
 	let tmp = [];
 
+	const axes = 3;
+
 	let
 		startA = i,
-		startB = i + 1,
-		startC = i + 2,
+		startB = (i + 1) * axes,
+		startC = (i + 2) * axes,
 
 		a = [
 			vtc[startA],
@@ -244,6 +246,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Basic intuition would tell me that it's being multiplied by 3 one too many times.
 	// Let's alert the indexes.
 
+	// alert(calcNorm(0, vtc))
+	// alert(calcNorm(1, vtc))
+
 	let norm1 = [];
 	for (let i = 0; i < vtc.length; i += 3) {
 		for (let _ = 0; _ < 3; _++) {
@@ -251,8 +256,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
-
-	alert(norm1)
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
