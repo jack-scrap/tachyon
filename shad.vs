@@ -19,5 +19,5 @@ void main() {
 
 	_pos = pos;
 	_posFrag = (proj * view * model * vec4(pos, 1.0)).xyz;
-	_norm = norm;
+	_norm = normalize(norm);
 }
