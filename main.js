@@ -11,27 +11,25 @@ function rd(name) {
 function calcNorm(i, vtc) {
 	let tmp = [];
 
-	const stride = 3;
-
 	let
-		idxA = i * stride;
-		idxB = (i + 1) * stride,
-		idxC = (i + 2) * stride,
+		startA = i,
+		startB = i + 1,
+		startC = i + 2,
 
 		a = [
-			vtc[idxA],
-			vtc[idxA + 1],
-			vtc[idxA + 2],
+			vtc[startA],
+			vtc[startA + 1],
+			vtc[startA + 2],
 		],
-			b = [
-			vtc[idxB],
-			vtc[idxB + 1],
-			vtc[idxB + 2],
+		b = [
+			vtc[startB],
+			vtc[startB + 1],
+			vtc[startB + 2],
 		],
-			c = [
-			vtc[idxC],
-			vtc[idxC + 1],
-			vtc[idxC + 2],
+		c = [
+			vtc[startC],
+			vtc[startC + 1],
+			vtc[startC + 2],
 		],
 
 		v = [
@@ -224,13 +222,37 @@ document.addEventListener("DOMContentLoaded", function() {
 		0.0, 1.0, 0.0
 	];
 
+// 	you want to start at 0
+// 	Because you're working with trianges, you're going to increment the index by 3
+// 	The "index" in this case being per-triangle
+
+// 	The first triangle is 0
+// 	The second triangle is 3
+
+// 	In the function
+// 	The index of A is going to be 0 * 3
+// 	The index of B is going to be 1 * 3
+// 	The index of B is going to be 2 * 3
+
+// 	The index in this case being the actual location in the vertices
+
+	// The color is some kind of washed out grey color
+	// Probably because the normals are not being pushed in the way you hoped, 3 at a time
+	//
+	// They have the same length
+	// About the last 2-3rds to 3 quarters of it though, it's just "not a number"
+	// Basic intuition would tell me that it's being multiplied by 3 one too many times.
+	// Let's alert the indexes.
+
 	let norm1 = [];
 	for (let i = 0; i < vtc.length; i += 3) {
-		for (let i = 0; i < 3; i++) {
+		for (let _ = 0; _ < 3; _++) {
 			norm1.push(calcNorm(i, vtc));
 		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
+
+	alert(norm1)
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
