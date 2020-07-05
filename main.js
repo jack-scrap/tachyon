@@ -70,14 +70,47 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
 	const vtc = [
-		-1.0, -1.0, 1.0,
-		1.0, -1.0, 1.0,
-		1.0, 1.0, 1.0,
-		-1.0, 1.0, 1.0,
-		-1.0, -1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0, 1.0, -1.0,
-		-1.0, 1.0, -1.0
+		-0.5, -0.5, -0.5,
+		0.5, -0.5, -0.5,
+		0.5,  0.5, -0.5,
+		0.5,  0.5, -0.5,
+		-0.5,  0.5, -0.5,
+		-0.5, -0.5, -0.5,
+
+		-0.5, -0.5,  0.5,
+		0.5, -0.5,  0.5,
+		0.5,  0.5,  0.5,
+		0.5,  0.5,  0.5,
+		-0.5,  0.5,  0.5,
+		-0.5, -0.5,  0.5,
+
+		-0.5,  0.5,  0.5,
+		-0.5,  0.5, -0.5,
+		-0.5, -0.5, -0.5,
+		-0.5, -0.5, -0.5,
+		-0.5, -0.5,  0.5,
+		-0.5,  0.5,  0.5,
+
+		0.5,  0.5,  0.5,
+		0.5,  0.5, -0.5,
+		0.5, -0.5, -0.5,
+		0.5, -0.5, -0.5,
+		0.5, -0.5,  0.5,
+		0.5,  0.5,  0.5,
+
+		-0.5, -0.5, -0.5,
+		0.5, -0.5, -0.5,
+		0.5, -0.5,  0.5,
+		0.5, -0.5,  0.5,
+		-0.5, -0.5,  0.5,
+		-0.5, -0.5, -0.5,
+
+		-0.5,  0.5, -0.5,
+		0.5,  0.5, -0.5,
+		0.5,  0.5,  0.5,
+		0.5,  0.5,  0.5,
+		-0.5,  0.5,  0.5,
+		-0.5,  0.5, -0.5,
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
@@ -86,68 +119,53 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrLoc);
 
-	// indices
-	const ibo = gl.createBuffer();
-	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-
-	const idc = [
-		0, 1, 2,
-		2, 3, 0,
-		1, 5, 6,
-		6, 2, 1,
-		7, 6, 5,
-		5, 4, 7,
-		4, 0, 3,
-		3, 7, 4,
-		4, 5, 1,
-		1, 0, 4,
-		3, 2, 6,
-		6, 7, 3
-	];
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
-
 	// normal
 	const nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
 	var norm = [
-		// Front
-		0.0,  0.0,  1.0,
-		0.0,  0.0,  1.0,
-		0.0,  0.0,  1.0,
-		0.0,  0.0,  1.0,
-
-		// Back
 		0.0,  0.0, -1.0,
-		0.0,  0.0, -1.0,
-		0.0,  0.0, -1.0,
-		0.0,  0.0, -1.0,
+		0.0,  0.0, -1.0, 
+		0.0,  0.0, -1.0, 
+		0.0,  0.0, -1.0, 
+		0.0,  0.0, -1.0, 
+		0.0,  0.0, -1.0, 
 
-		// Top
-		0.0,  1.0,  0.0,
-		0.0,  1.0,  0.0,
-		0.0,  1.0,  0.0,
-		0.0,  1.0,  0.0,
+		0.0,  0.0, 1.0,
+		0.0,  0.0, 1.0,
+		0.0,  0.0, 1.0,
+		0.0,  0.0, 1.0,
+		0.0,  0.0, 1.0,
+		0.0,  0.0, 1.0,
 
-		// Bottom
-		0.0, -1.0,  0.0,
-		0.0, -1.0,  0.0,
-		0.0, -1.0,  0.0,
-		0.0, -1.0,  0.0,
-
-		// Right
-		1.0,  0.0,  0.0,
-		1.0,  0.0,  0.0,
-		1.0,  0.0,  0.0,
-		1.0,  0.0,  0.0,
-
-		// Left
 		-1.0,  0.0,  0.0,
 		-1.0,  0.0,  0.0,
 		-1.0,  0.0,  0.0,
-		-1.0,  0.0,  0.0
+		-1.0,  0.0,  0.0,
+		-1.0,  0.0,  0.0,
+		-1.0,  0.0,  0.0,
+
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0
 	];
-
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
@@ -199,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		mat4.mul(model, rot, id);
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 
-		gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_SHORT, 0);
+		gl.drawArrays(gl.TRIANGLES, 0, vtc.length / 3);
 
 		i += 0.01;
 
