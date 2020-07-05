@@ -11,12 +11,10 @@ function rd(name) {
 function calcNorm(i, vtc) {
 	let tmp = [];
 
-	const stride = 3;
-
 	let
-		idxA = i * stride,
-		idxB = (i + 1) * stride,
-		idxC = (i + 2) * stride,
+		idxA = i;
+		idxB = i + 1,
+		idxC = i + 2,
 
 		a = [
 			vtc[idxA],
@@ -225,8 +223,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 
 	let norm1 = [];
-	for (let i = 0; i < vtc.length; i++) {
-		norm1.push(calcNorm(i, vtc));
+	for (let i = 0; i < vtc.length; i += 3) {
+		for (let i = 0; i < 3; i++) {
+			norm1.push(calcNorm(i, vtc));
+		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
 
