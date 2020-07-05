@@ -6,7 +6,6 @@ vec3
 	colObj = vec3(1.0);
 
 varying vec3
-	_pos,
 	_posFrag,
 	_norm;
 
