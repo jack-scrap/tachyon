@@ -45,6 +45,7 @@ function calcNorm(vtc, i) {
 
 	vec3.normalize(prod, prod);
 
+	return prod;
 
 	// have traversed 9 numbers in total. Because it is multipled by 3 (the number of axis), though, the index passed in just needs to be upped by 3
 }
