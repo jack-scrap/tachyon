@@ -1,4 +1,6 @@
-const axes = 3;
+const
+	axes = 3,
+	triVtc = 3;
 
 function rd(name) {
 	var req = new XMLHttpRequest();
@@ -175,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	const nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	const triVtc = 3;
 	let
 		cnt = vtc.length / (3 * 3),
 		norm = [];
