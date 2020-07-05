@@ -19,41 +19,19 @@ function calcNorm(vtc, i) {
 		startC = (i + 2) * axes;
 
 	let
-		a = [
-			vtc[startA],
-			vtc[startA + 1],
-			vtc[startA + 2]
-		],
-		b = [
-			vtc[startB],
-			vtc[startB + 1],
-			vtc[startB + 2]
-		],
-		c = [
-			vtc[startC],
-			vtc[startC + 1],
-			vtc[startC + 2]
-		],
+		a = vec3.fromValues(vtc[startA], vtc[startA + 1], vtc[startA + 2]),
+		b = vec3.fromValues(vtc[startB], vtc[startB + 1], vtc[startB + 2]),
+		c = vec3.fromValues(vtc[startC], vtc[startC + 1], vtc[startC + 2]);
 
-		v = [
-			[
-				b[0] - a[0],
-				b[1] - a[1],
-				b[2] - a[2]
-			], [
-				c[0] - a[0],
-				c[1] - a[1],
-				c[2] - a[2]
-			],
-		],
+	let v = [
+		vec3.create(),
+		vec3.create()
+	];
+	vec3.sub(v[0], b, a);
+	vec3.sub(v[1], c, a);
 
-		vTmp = [
-			vec3.fromValues(v[0][0], v[0][1], v[0][2]),
-			vec3.fromValues(v[1][0], v[1][1], v[1][2])
-		],
-
-		prod = vec3.create();
-	vec3.cross(prod, vTmp[0], vTmp[1]);
+	let prod = vec3.create();
+	vec3.cross(prod, v[0], v[1]);
 
 	vec3.normalize(prod, prod);
 
