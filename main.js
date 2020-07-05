@@ -219,8 +219,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		0.0, 1.0, 0.0
 	];
 
-	let cnt = (2 * 3) * 2;
 	const triVtc = 3;
+	let cnt = vtc.length / (3 * 3);
 	let norm1 = [];
 	for (let t = 0; t < cnt * triVtc; t += triVtc) {
 		let norm = calcNorm(vtc, t);
@@ -231,8 +231,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			norm1.push(norm[2]);
 		}
 	}
-
-	alert(norm1)
 
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
 
