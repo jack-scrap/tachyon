@@ -9,8 +9,6 @@ function rd(name) {
 }
 
 function calcNorm(i, vtc) {
-	let tmp = [];
-
 	const axes = 3;
 
 	let
@@ -58,11 +56,7 @@ function calcNorm(i, vtc) {
 
 	vec3.normalize(prod, prod);
 
-	tmp.push(prod[0]);
-	tmp.push(prod[1]);
-	tmp.push(prod[2]);
-
-	return tmp;
+	return prod;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -227,16 +221,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	let
 		norm1 = [],
 		cnt = (3 * 2) * 2;
-	for (let i = 0; i < cnt * 3; i += 3) {
+	for (let i = 0; i < cnt; i++) {
 		let norm = calcNorm(i, vtc);
-
-		for (let _ = 0; _ < 3; _++) {
-			norm1.push(norm[0]);
-			norm1.push(norm[1]);
-			norm1.push(norm[2]);
-		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
+
+	alert(norm1)
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
