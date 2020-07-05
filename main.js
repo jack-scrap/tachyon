@@ -1,3 +1,5 @@
+const axes = 3;
+
 function rd(name) {
 	var req = new XMLHttpRequest();
 	req.open('GET', name, false);
@@ -7,8 +9,6 @@ function rd(name) {
 		return req.responseText;
 	}
 }
-
-const axes = 3;
 
 function calcNorm(vtc, i) {
 	let
@@ -175,64 +175,20 @@ document.addEventListener("DOMContentLoaded", function() {
 	const nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = [
-		0.0, 0.0, -1.0,
-		0.0, 0.0, -1.0,
-		0.0, 0.0, -1.0,
-		0.0, 0.0, -1.0,
-		0.0, 0.0, -1.0,
-		0.0, 0.0, -1.0,
-
-		0.0, 0.0, 1.0,
-		0.0, 0.0, 1.0,
-		0.0, 0.0, 1.0,
-		0.0, 0.0, 1.0,
-		0.0, 0.0, 1.0,
-		0.0, 0.0, 1.0,
-
-		-1.0, 0.0, 0.0,
-		-1.0, 0.0, 0.0,
-		-1.0, 0.0, 0.0,
-		-1.0, 0.0, 0.0,
-		-1.0, 0.0, 0.0,
-		-1.0, 0.0, 0.0,
-
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-
-		0.0, -1.0, 0.0,
-		0.0, -1.0, 0.0,
-		0.0, -1.0, 0.0,
-		0.0, -1.0, 0.0,
-		0.0, -1.0, 0.0,
-		0.0, -1.0, 0.0,
-
-		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0
-	];
-
 	const triVtc = 3;
-	let cnt = vtc.length / (3 * 3);
-	let norm1 = [];
+	let
+		cnt = vtc.length / (3 * 3),
+		norm = [];
 	for (let t = 0; t < cnt * triVtc; t += triVtc) {
-		let norm = calcNorm(vtc, t);
+		let tmp = calcNorm(vtc, t);
 
 		for (let _ = 0; _ < 3; _++) {
-			norm1.push(norm[0]);
-			norm1.push(norm[1]);
-			norm1.push(norm[2]);
+			norm.push(tmp[0]);
+			norm.push(tmp[1]);
+			norm.push(tmp[2]);
 		}
 	}
-
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
