@@ -16,6 +16,6 @@ varying vec3
 void main() {
 	gl_Position = proj * view * model * vec4(pos, 1.0);
 
-	_posFrag = (proj * view * model * vec4(pos, 1.0)).xyz;
+	_posFrag = gl_Position.xyz;
 	_norm = normalize(norm);
 }
