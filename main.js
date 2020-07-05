@@ -220,26 +220,22 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 
 	const
-		cnt = 7,
+		cnt = (2 * 3) * 2,
 		triVtc = 3;
 	let norm1 = [];
 	for (let t = 0; t < cnt * triVtc; t += triVtc) {
 		let norm = calcNorm(t, vtc);
 
-		norm1.push(norm[0]);
-		norm1.push(norm[1]);
-		norm1.push(norm[2]);
+		for (let _ = 0; _ < 3; _++) {
+			norm1.push(norm[0]);
+			norm1.push(norm[1]);
+			norm1.push(norm[2]);
+		}
 	}
 
-// 	let
-// 		norm1 = [],
-// 		cnt = (3 * 2) * 2;
-// 	for (let i = 0; i < cnt; i++) {
-// 		let norm = calcNorm(i, vtc);
-// 	}
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
-
 	alert(norm1)
+
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
