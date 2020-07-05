@@ -8,57 +8,61 @@ function rd(name) {
 	}
 }
 
-function calcNorm(vtc) {
-	for (let i = 0; i < 3; i += 3) {
-		const stride = 3;
+function calcNorm(i, vtc) {
+	let tmp = [];
 
-		let
-			idxA = i * stride,
-			idxB = (i + 1) * stride,
-			idxC = (i + 2) * stride,
+	const stride = 3;
 
-			a = [
-				vtc[idxA],
-				vtc[idxA + 1],
-				vtc[idxA + 2],
+	let
+		idxA = i * stride,
+		idxB = (i + 1) * stride,
+		idxC = (i + 2) * stride,
+
+		a = [
+			vtc[idxA],
+			vtc[idxA + 1],
+			vtc[idxA + 2],
+		],
+			b = [
+			vtc[idxB],
+			vtc[idxB + 1],
+			vtc[idxB + 2],
+		],
+			c = [
+			vtc[idxC],
+			vtc[idxC + 1],
+			vtc[idxC + 2],
+		],
+
+		v = [
+			[
+				b[0] - a[0],
+				b[1] - a[1],
+				b[2] - a[2]
 			],
-				b = [
-				vtc[idxB],
-				vtc[idxB + 1],
-				vtc[idxB + 2],
+			[
+				c[0] - a[0],
+				c[1] - a[1],
+				c[2] - a[2]
 			],
-				c = [
-				vtc[idxC],
-				vtc[idxC + 1],
-				vtc[idxC + 2],
-			],
+		],
 
-			v = [
-				[
-					b[0] - a[0],
-					b[1] - a[1],
-					b[2] - a[2]
-				],
-				[
-					c[0] - a[0],
-					c[1] - a[1],
-					c[2] - a[2]
-				],
-			],
+		vtmp = [
+			vec3.fromValues(v[0][0], v[0][1], v[0][2]),
+			vec3.fromValues(v[1][0], v[1][1], v[1][2])
+		],
 
-			vtmp = [
-				vec3.fromValues(v[0][0], v[0][1], v[0][2]),
-				vec3.fromValues(v[1][0], v[1][1], v[1][2])
-			],
+		prod = vec3.create();
 
-			prod = vec3.create();
+	vec3.cross(prod, vtmp[0], vtmp[1]);
 
-		vec3.cross(prod, vtmp[0], vtmp[1]);
+	vec3.normalize(prod, prod);
 
-		vec3.normalize(prod, prod);
+	tmp.push(prod[0]);
+	tmp.push(prod[1]);
+	tmp.push(prod[2]);
 
-		return prod;
-	}
+	return tmp;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -219,9 +223,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		0.0, 1.0, 0.0,
 		0.0, 1.0, 0.0
 	];
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
-	calcNorm(vtc);
+	let norm1 = [];
+	for (let i = 0; i < vtc.length; i++) {
+		norm1.push(calcNorm(i, vtc));
+	}
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
