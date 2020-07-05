@@ -70,35 +70,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
 	const vtc = [
-		-1.0, 1.0, -1.0,
-		-1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0,
-		1.0, 1.0, -1.0,
-
-		-1.0, 1.0, 1.0,
 		-1.0, -1.0, 1.0,
-		-1.0, -1.0, -1.0,
-		-1.0, 1.0, -1.0,
-
-		1.0, 1.0, 1.0,
 		1.0, -1.0, 1.0,
+		1.0, 1.0, 1.0,
+		-1.0, 1.0, 1.0,
+		-1.0, -1.0, -1.0,
 		1.0, -1.0, -1.0,
 		1.0, 1.0, -1.0,
-
-		1.0, 1.0, 1.0,
-		1.0, -1.0, 1.0,
-		-1.0, -1.0, 1.0,
-		-1.0, 1.0, 1.0,
-
-		1.0, 1.0, -1.0,
-		1.0, -1.0, -1.0,
-		-1.0, -1.0, -1.0,
-		-1.0, 1.0, -1.0,
-
-		-1.0, -1.0, -1.0,
-		-1.0, -1.0, 1.0,
-		1.0, -1.0, 1.0,
-		1.0, -1.0, -1.0
+		-1.0, 1.0, -1.0
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
@@ -113,22 +92,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	const idc = [
 		0, 1, 2,
-		0, 2, 3,
-
-		5, 4, 6,
-		6, 4, 7,
-
-		8, 9, 10,
-		8, 10, 11,
-
-		13, 12, 14,
-		15, 14, 12,
-
-		16, 17, 18,
-		16, 18, 19,
-
-		21, 20, 22,
-		22, 20, 23
+		2, 3, 0,
+		1, 5, 6,
+		6, 2, 1,
+		7, 6, 5,
+		5, 4, 7,
+		4, 0, 3,
+		3, 7, 4,
+		4, 5, 1,
+		1, 0, 4,
+		3, 2, 6,
+		6, 7, 3
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idc), gl.STATIC_DRAW);
 
@@ -136,83 +110,44 @@ document.addEventListener("DOMContentLoaded", function() {
 	const nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	// var norm = [
-	// 	-1.0, 1.0, -1.0,
-	// 	-1.0, 1.0, 1.0,
-	// 	1.0, 1.0, 1.0,
-	// 	1.0, 1.0, -1.0,
+	var norm = [
+		// Front
+		0.0,  0.0,  1.0,
+		0.0,  0.0,  1.0,
+		0.0,  0.0,  1.0,
+		0.0,  0.0,  1.0,
 
-	// 	-1.0, 1.0, 1.0,
-	// 	-1.0, -1.0, 1.0,
-	// 	-1.0, -1.0, -1.0,
-	// 	-1.0, 1.0, -1.0,
+		// Back
+		0.0,  0.0, -1.0,
+		0.0,  0.0, -1.0,
+		0.0,  0.0, -1.0,
+		0.0,  0.0, -1.0,
 
-	// 	1.0, 1.0, 1.0,
-	// 	1.0, -1.0, 1.0,
-	// 	1.0, -1.0, -1.0,
-	// 	1.0, 1.0, -1.0,
+		// Top
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
+		0.0,  1.0,  0.0,
 
-	// 	1.0, 1.0, 1.0,
-	// 	1.0, -1.0, 1.0,
-	// 	-1.0, -1.0, 1.0,
-	// 	-1.0, 1.0, 1.0,
+		// Bottom
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
+		0.0, -1.0,  0.0,
 
-	// 	1.0, 1.0, -1.0,
-	// 	1.0, -1.0, -1.0,
-	// 	-1.0, -1.0, -1.0,
-	// 	-1.0, 1.0, -1.0,
+		// Right
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
+		1.0,  0.0,  0.0,
 
-	// 	-1.0, -1.0, -1.0,
-	// 	-1.0, -1.0, 1.0,
-	// 	1.0, -1.0, 1.0,
-	// 	1.0, -1.0, -1.0
-	// ];
+		// Left
+		-1.0,  0.0,  0.0,
+		-1.0,  0.0,  0.0,
+		-1.0,  0.0,  0.0,
+		-1.0,  0.0,  0.0
+	];
 
-	var norm = [];
-	for (let i = 0; i < 2; i++) {
-		for (let i = 0; i < idc.length; i += 3) {
-			let start = idc[i];
-
-			// get indices of points
-			let
-				idxA = start * 3,
-				idxB = (start + 1) * 3,
-				idxC = (start + 2) * 3;
-
-			// get points
-			let
-				a = [
-					vtc[idxA],
-					vtc[idxA + 1],
-					vtc[idxA + 2]
-				],
-				b = [
-					vtc[idxB],
-					vtc[idxB + 1],
-					vtc[idxB + 2]
-				],
-				c = [
-					vtc[idxC],
-					vtc[idxC + 1],
-					vtc[idxC + 2]
-				];
-
-			// calculate
-			let v0 = vec3.create();
-			vec3.sub(v0, b, c);
-
-			let v1 = vec3.create();
-			vec3.sub(v1, b, a);
-
-			let prod = vec3.create();
-			vec3.cross(prod, v0, v1);
-			vec3.normalize(prod, prod);
-
-			norm.push(prod[0]);
-			norm.push(prod[1]);
-			norm.push(prod[2]);
-		}
-	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
