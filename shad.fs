@@ -13,7 +13,7 @@ void main() {
 
 	vec3
 		lightColor = vec3(1.0),
-		objectColor = vec3(1.0, 0.0, 0.0);
+		objectColor = vec3(1.0);
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = diff * lightColor;
 
