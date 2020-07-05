@@ -13,7 +13,7 @@ vec3
 void main() {
 	vec3 lightDir = normalize(lightPos - _posFrag);
 
-	float diff = dot(_norm, lightDir);
+	float diff = max(dot(_norm, lightDir), 0.0);
 
 	vec3 result = (diff * lightColor) * objectColor;
 
