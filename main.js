@@ -8,6 +8,55 @@ function rd(name) {
 	}
 }
 
+function calcNorm(vtc) {
+	for (let i = 0; i < 3; i += 3) {
+		const stride = 3;
+
+		let
+			idxA = i * stride,
+			idxB = (i + 1) * stride,
+			idxC = (i + 2) * stride,
+
+			a = [
+				vtc[idxA],
+				vtc[idxA + 1],
+				vtc[idxA + 2],
+			],
+				b = [
+				vtc[idxB],
+				vtc[idxB + 1],
+				vtc[idxB + 2],
+			],
+				c = [
+				vtc[idxC],
+				vtc[idxC + 1],
+				vtc[idxC + 2],
+			],
+
+			v0 = [
+				b[0] - a[0],
+				b[1] - a[1],
+				b[2] - a[2]
+			],
+			v1 = [
+				c[0] - a[0],
+				c[1] - a[1],
+				c[2] - a[2]
+			],
+
+			v0tmp = vec3.fromValues(v0[0], v0[1], v0[2]),
+			v1tmp = vec3.fromValues(v1[0], v1[1], v1[2]);
+
+		prod = vec3.create();
+
+		vec3.cross(prod, v0tmp, v1tmp);
+
+		vec3.normalize(prod, prod);
+
+		return prod;
+	}
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 	// initialize
 	const canv = document.getElementById('disp');
@@ -168,55 +217,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
-	function calcNorm() {
-		for (let i = 0; i < 3; i += 3) {
-			const stride = 3;
-
-			let
-				idxA = i * stride,
-				idxB = (i + 1) * stride,
-				idxC = (i + 2) * stride;
-
-			let
-				a = [
-					vtc[idxA],
-					vtc[idxA + 1],
-					vtc[idxA + 2],
-				], b = [
-					vtc[idxB],
-					vtc[idxB + 1],
-					vtc[idxB + 2],
-				], c = [
-					vtc[idxC],
-					vtc[idxC + 1],
-					vtc[idxC + 2],
-				],
-
-				v0 = [
-					b[0] - a[0],
-					b[1] - a[1],
-					b[2] - a[2]
-				],
-				v1 = [
-					c[0] - a[0],
-					c[1] - a[1],
-					c[2] - a[2]
-				];
-
-			let
-				v0tmp = vec3.fromValues(v0[0], v0[1], v0[2]),
-				v1tmp = vec3.fromValues(v1[0], v1[1], v1[2]);
-
-				prod = vec3.create();
-
-			vec3.cross(prod, v0tmp, v1tmp);
-
-			vec3.normalize(prod, prod);
-
-			return prod;
-		}
-	}
-	calcNorm();
+	calcNorm(vtc);
 
 	// normal
 	const attrNorm = gl.getAttribLocation(prog, 'norm');
