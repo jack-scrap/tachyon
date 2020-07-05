@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		1.0, 1.0, 1.0,
 		1.0, 1.0, 1.0,
 		-1.0, 1.0, 1.0,
-		-1.0, 1.0, -1.0,
+		-1.0, 1.0, -1.0
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
@@ -224,35 +224,16 @@ document.addEventListener("DOMContentLoaded", function() {
 		0.0, 1.0, 0.0
 	];
 
-// 	you want to start at 0
-// 	Because you're working with trianges, you're going to increment the index by 3
-// 	The "index" in this case being per-triangle
+	let
+		norm1 = [],
+		cnt = (3 * 2) * 2;
+	for (let i = 0; i < cnt * 3; i += 3) {
+		let norm = calcNorm(i, vtc);
 
-// 	The first triangle is 0
-// 	The second triangle is 3
-
-// 	In the function
-// 	The index of A is going to be 0 * 3
-// 	The index of B is going to be 1 * 3
-// 	The index of B is going to be 2 * 3
-
-// 	The index in this case being the actual location in the vertices
-
-	// The color is some kind of washed out grey color
-	// Probably because the normals are not being pushed in the way you hoped, 3 at a time
-	//
-	// They have the same length
-	// About the last 2-3rds to 3 quarters of it though, it's just "not a number"
-	// Basic intuition would tell me that it's being multiplied by 3 one too many times.
-	// Let's alert the indexes.
-
-	// alert(calcNorm(0, vtc))
-	// alert(calcNorm(1, vtc))
-
-	let norm1 = [];
-	for (let i = 0; i < vtc.length; i += 3) {
 		for (let _ = 0; _ < 3; _++) {
-			norm1.push(calcNorm(i, vtc));
+			norm1.push(norm[0]);
+			norm1.push(norm[1]);
+			norm1.push(norm[2]);
 		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm1), gl.STATIC_DRAW);
