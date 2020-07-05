@@ -11,10 +11,12 @@ function rd(name) {
 function calcNorm(i, vtc) {
 	let tmp = [];
 
+	const stride = 3;
+
 	let
-		idxA = i;
-		idxB = i + 1,
-		idxC = i + 2,
+		idxA = i * stride;
+		idxB = (i + 1) * stride,
+		idxC = (i + 2) * stride,
 
 		a = [
 			vtc[idxA],
