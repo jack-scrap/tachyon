@@ -33,23 +33,27 @@ function calcNorm(vtc) {
 				vtc[idxC + 2],
 			],
 
-			v0 = [
-				b[0] - a[0],
-				b[1] - a[1],
-				b[2] - a[2]
+			v = [
+				[
+					b[0] - a[0],
+					b[1] - a[1],
+					b[2] - a[2]
+				],
+				[
+					c[0] - a[0],
+					c[1] - a[1],
+					c[2] - a[2]
+				],
 			],
-			v1 = [
-				c[0] - a[0],
-				c[1] - a[1],
-				c[2] - a[2]
+
+			vtmp = [
+				vec3.fromValues(v[0][0], v[0][1], v[0][2]),
+				vec3.fromValues(v[1][0], v[1][1], v[1][2])
 			],
 
-			v0tmp = vec3.fromValues(v0[0], v0[1], v0[2]),
-			v1tmp = vec3.fromValues(v1[0], v1[1], v1[2]);
+			prod = vec3.create();
 
-		prod = vec3.create();
-
-		vec3.cross(prod, v0tmp, v1tmp);
+		vec3.cross(prod, vtmp[0], vtmp[1]);
 
 		vec3.normalize(prod, prod);
 
