@@ -71,19 +71,6 @@ class Ld {
 	}
 
 	idc(name) {
-		// check normals existence
-		let norm = false;
-		for (let l of util.rd(name + ".obj").split("\n")) {
-			let tok = [];
-			for (let _ of l.split(" ")) {
-				tok.push(_);
-			}
-
-			if (tok[0] == "vn") {
-				norm = true;
-			}
-		}
-
 		let data = [];
 		for (let l of util.rd(name + ".obj").split("\n")) {
 			let tok = [];
@@ -98,10 +85,18 @@ class Ld {
 				for (let i = 0; i < 3; i++) {
 					let idx = idc[i].split("//");
 
-					if (norm) {
-						data.push(idx[0] - 1);
-					} else {
-						data.push(idx[1] - 1);
+					switch (idx.length) {
+						case 1:
+							data.push(idx[0] - 1);
+
+							break;
+
+						case 2:
+							data.push(idx[0] - 1);
+
+							// TODO: also push back index of normal
+
+							break;
 					}
 				}
 			}
