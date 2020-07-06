@@ -173,14 +173,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	var vtc = ld.vtc("tachyon");
+	var vtc = ld.vtc("cube");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	var idc = ld.idc("tachyon");
+	var idc = ld.idc("cube");
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
