@@ -82,9 +82,29 @@ function rdIdc(name) {
 	return data;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-	// alert(rdIdc("asdf"));
+function rdNorm(name) {
+	let data = [];
 
+	for (let l of rd(name + ".obj").split("\n")) {
+		let tok = [];
+		for (let _ of l.split(" ")) {
+			tok.push(_);
+		}
+
+		if (tok[0] == "vn") {
+			let norm = tok;
+			norm.shift();
+
+			for (let i = 0; i < 3; i++) {
+				data.push(norm[i] - 1);
+			}
+		}
+	}
+
+	return data;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
 	// initialize
 	const canv = document.getElementById('disp');
 	var gl = canv.getContext('webgl');
@@ -145,14 +165,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	const vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	const vtc = rdVtc("asdf");
+	const vtc = rdVtc("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	const ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	const idc = rdIdc("asdf");
+	const idc = rdIdc("tachyon");
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
@@ -164,18 +184,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	let
-		cnt = vtc.length / (3 * 3),
-		norm = [];
-	for (let t = 0; t < cnt * triVtc; t += triVtc) {
-		let tmp = calcNorm(vtc, t);
-
-		for (let _ = 0; _ < 3; _++) {
-			norm.push(tmp[0]);
-			norm.push(tmp[1]);
-			norm.push(tmp[2]);
-		}
-	}
+	const norm = rdNorm("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
