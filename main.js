@@ -83,7 +83,7 @@ function rdIdc(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-	alert(rdIdc("asdf"));
+	// alert(rdIdc("asdf"));
 
 	// initialize
 	const canv = document.getElementById('disp');
@@ -145,50 +145,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	const vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	const vtc = [
-		-1.0, -1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0, 1.0, -1.0,
-		1.0, 1.0, -1.0,
-		-1.0, 1.0, -1.0,
-		-1.0, -1.0, -1.0,
-
-		-1.0, -1.0, 1.0,
-		1.0, -1.0, 1.0,
-		1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0,
-		-1.0, 1.0, 1.0,
-		-1.0, -1.0, 1.0,
-
-		-1.0, 1.0, 1.0,
-		-1.0, 1.0, -1.0,
-		-1.0, -1.0, -1.0,
-		-1.0, -1.0, -1.0,
-		-1.0, -1.0, 1.0,
-		-1.0, 1.0, 1.0,
-
-		1.0, 1.0, 1.0,
-		1.0, 1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0, -1.0, 1.0,
-		1.0, 1.0, 1.0,
-
-		-1.0, -1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0, -1.0, 1.0,
-		1.0, -1.0, 1.0,
-		-1.0, -1.0, 1.0,
-		-1.0, -1.0, -1.0,
-
-		-1.0, 1.0, -1.0,
-		1.0, 1.0, -1.0,
-		1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0,
-		-1.0, 1.0, 1.0,
-		-1.0, 1.0, -1.0
-	];
+	const vtc = rdVtc("asdf");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
+
+	// indices
+	const ibo = gl.createBuffer();
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+
+	const idc = rdIdc("asdf");
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
 	const attrLoc = gl.getAttribLocation(prog, 'pos');
@@ -262,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		mat4.mul(model, rot, id);
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 
-		gl.drawArrays(gl.TRIANGLES, 0, vtc.length / 3);
+		gl.drawElements(gl.TRIANGLES, idc.length, gl.UNSIGNED_BYTE, 0);
 
 		i += 0.01;
 
