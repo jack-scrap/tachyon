@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		shadFragTxt = rd("shad.fs");
 
 	// vertex
-	const shadVtx = gl.createShader(gl.VERTEX_SHADER);
+	var shadVtx = gl.createShader(gl.VERTEX_SHADER);
 	gl.shaderSource(shadVtx, shadVtxTxt);
 
 	gl.compileShader(shadVtx);
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// fragment
-	const shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
+	var shadFrag = gl.createShader(gl.FRAGMENT_SHADER);
 	gl.shaderSource(shadFrag, shadFragTxt);
 
 	gl.compileShader(shadFrag);
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// program
-	const prog = gl.createProgram();
+	var prog = gl.createProgram();
 
 	gl.attachShader(prog, shadVtx);
 	gl.attachShader(prog, shadFrag);
@@ -162,38 +162,38 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.useProgram(prog);
 
 	// VBO
-	const vbo = gl.createBuffer();
+	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	const vtc = rdVtc("tachyon");
+	var vtc = rdVtc("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
-	const ibo = gl.createBuffer();
+	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	const idc = rdIdc("tachyon");
+	var idc = rdIdc("tachyon");
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
-	const attrLoc = gl.getAttribLocation(prog, 'pos');
+	var attrLoc = gl.getAttribLocation(prog, 'pos');
 	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrLoc);
 
 	// normal
-	const nbo = gl.createBuffer();
+	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	const norm = rdNorm("tachyon");
+	var norm = rdNorm("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
-	const attrNorm = gl.getAttribLocation(prog, 'norm');
+	var attrNorm = gl.getAttribLocation(prog, 'norm');
 	gl.vertexAttribPointer(attrNorm, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrNorm);
 
 	// matrix
-	const
+	var
 		model = new Float32Array(16),
 		view = new Float32Array(16),
 		proj = new Float32Array(16);
@@ -211,14 +211,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	);
 	mat4.perspective(proj, (1 / 4) * Math.PI, canv.clientWidth / canv.clientHeight, 0.1, 1000.0);
 
-	const
+	var
 		id = new Float32Array(16),
 		rot = new Float32Array(16);
 
 	mat4.identity(id);
 
 	// uniform
-	const
+	var
 		uniModel = gl.getUniformLocation(prog, 'model'),
 		uniView = gl.getUniformLocation(prog, 'view'),
 		uniProj = gl.getUniformLocation(prog, 'proj');
