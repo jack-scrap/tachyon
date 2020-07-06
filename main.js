@@ -49,7 +49,6 @@ function rdVtc(name) {
 
 		if (tok[0] == "v") {
 			let v = tok;
-
 			v.shift();
 
 			for (let i = 0; i < 3; i++) {
@@ -61,8 +60,30 @@ function rdVtc(name) {
 	return data;
 }
 
+function rdIdc(name) {
+	let data = [];
+
+	for (let l of rd(name + ".obj").split("\n")) {
+		let tok = [];
+		for (let _ of l.split(" ")) {
+			tok.push(_);
+		}
+
+		if (tok[0] == "f") {
+			let v = tok;
+			v.shift();
+
+			for (let i = 0; i < 3; i++) {
+				data.push(v[i] - 1);
+			}
+		}
+	}
+
+	return data;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-	alert(rdVtc("asdf"));
+	alert(rdIdc("asdf"));
 
 	// initialize
 	const canv = document.getElementById('disp');
