@@ -18,10 +18,12 @@ class Util {
 			return req.responseText;
 		}
 	}
+};
 
-	static calcNorm(vtc, i) {
+class Calc {
+	static norm(vtc, i) {
 		let
-			startA = i * axes,
+		startA = i * axes,
 			startB = (i + 1) * axes,
 			startC = (i + 2) * axes;
 
