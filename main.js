@@ -48,11 +48,11 @@ function rdVtc(name) {
 		}
 
 		if (tok[0] == "v") {
-			let v = tok;
-			v.shift();
+			let vtc = tok;
+			vtc.shift();
 
 			for (let i = 0; i < 3; i++) {
-				data.push(v[i]);
+				data.push(vtc[i]);
 			}
 		}
 	}
@@ -70,11 +70,11 @@ function rdIdc(name) {
 		}
 
 		if (tok[0] == "f") {
-			let v = tok;
-			v.shift();
+			let idc = tok;
+			idc.shift();
 
 			for (let i = 0; i < 3; i++) {
-				data.push(v[i] - 1);
+				data.push(idc[i] - 1);
 			}
 		}
 	}
