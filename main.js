@@ -194,33 +194,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
 	// normal
-	var idcNorm = Ld.idc('cube', 1);
-
 	var
+		idcNorm = Ld.idc('cube', 1),
+
 		norm = Ld.norm('cube'),
 		idxedNorm = [];
 	for (let i = 0; i < idcNorm.length; i++) {
 		let idx = idcNorm[i] * 3;
 
-		idxedNorm.push(norm[idx]);
-		idxedNorm.push(norm[idx + 1]);
-		idxedNorm.push(norm[idx + 2]);
+		for (let i = 0; i < 3; i++) {
+			idxedNorm.push(norm[idx + i]);
+		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(idxedNorm), gl.STATIC_DRAW);
-
-// 	// normal
-// 	/// indices
-// 	var idcNorm = Ld.idc('cube', 1);
-
-// 	var
-// 		norm = Ld.norm('cube'),
-// 		idxedNorm = [];
-// 	for (let i = 0; i < idcNorm.length; i++) {
-// 		let idx = idcNorm[i];
-
-// 		idxedNorm.push(norm[idx]);
-// 	}
-// 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(idxedNorm), gl.STATIC_DRAW);
 
 	var attrNorm = gl.getAttribLocation(prog, 'norm');
 	gl.vertexAttribPointer(attrNorm, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
