@@ -49,13 +49,13 @@ class Util {
 class Ld {
 	static vtc(name) {
 		let data = [];
-		for (let l of Util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + '.obj').split('\n')) {
 			let tok = [];
-			for (let _ of l.split(" ")) {
+			for (let _ of l.split(' ')) {
 				tok.push(_);
 			}
 
-			if (tok[0] == "v") {
+			if (tok[0] == 'v') {
 				let vtc = tok;
 				vtc.shift();
 
@@ -70,18 +70,18 @@ class Ld {
 
 	static idc(name, type) {
 		let data = [];
-		for (let l of Util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + '.obj').split('\n')) {
 			let tok = [];
-			for (let _ of l.split(" ")) {
+			for (let _ of l.split(' ')) {
 				tok.push(_);
 			}
 
-			if (tok[0] == "f") {
+			if (tok[0] == 'f') {
 				let idc = tok;
 				idc.shift();
 
 				for (let i = 0; i < 3; i++) {
-					let idx = idc[i].split("//");
+					let idx = idc[i].split('//');
 
 					data.push(idx[type] - 1);
 				}
@@ -93,13 +93,13 @@ class Ld {
 
 	static norm(name) {
 		let data = [];
-		for (let l of Util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + '.obj').split('\n')) {
 			let tok = [];
-			for (let _ of l.split(" ")) {
+			for (let _ of l.split(' ')) {
 				tok.push(_);
 			}
 
-			if (tok[0] == "vn") {
+			if (tok[0] == 'vn') {
 				let norm = tok;
 				norm.shift();
 
@@ -113,7 +113,7 @@ class Ld {
 	}
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
 	// initialize
 	const canv = document.getElementById('disp');
 	var gl = canv.getContext('webgl');
@@ -131,8 +131,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// shader
 	const
-		shadVtxTxt = Util.rd("shad.vs"),
-		shadFragTxt = Util.rd("shad.fs");
+		shadVtxTxt = Util.rd('shad.vs'),
+		shadFragTxt = Util.rd('shad.fs');
 
 	// vertex
 	var shadVtx = gl.createShader(gl.VERTEX_SHADER);
@@ -174,14 +174,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	var vtc = Ld.vtc("cube");
+	var vtc = Ld.vtc('cube');
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	var idc = Ld.idc("cube", type.VTX);
+	var idc = Ld.idc('cube', type.VTX);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = Ld.norm("cube");
+	var norm = Ld.norm('cube');
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
