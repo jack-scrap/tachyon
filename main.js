@@ -81,7 +81,7 @@ class Ld {
 				idc.shift();
 
 				for (let i = 0; i < 3; i++) {
-					let idx = idc[i].split('//');
+					let idx = idc[i].split('/');
 
 					data.push(idx[type] - 1);
 				}
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
 	var
-		idcNorm = Ld.idc('cube', 1),
+		idcNorm = Ld.idc('cube', type.NORM),
 
 		norm = Ld.norm('cube'),
 		idxedNorm = [];
