@@ -1,6 +1,12 @@
 const
 	axes = 3,
-	triVtc = 3;
+	triVtc = 3,
+
+	idc = {
+		VTX: 0,
+		TEX: 1,
+		NORM: 2
+	};
 
 class Util {
 	rd(name) {
@@ -90,13 +96,12 @@ class Ld {
 				idc.shift();
 
 				for (let i = 0; i < 3; i++) {
-					let coor = idc[i].split("//");
+					let idx = idc[i].split("//");
 
 					if (norm) {
-						let idx = coor[0] - 1;
-						data.push(idx);
+						data.push(idx[0] - 1);
 					} else {
-						data.push(idc[i] - 1);
+						data.push(idx[1] - 1);
 					}
 				}
 			}
