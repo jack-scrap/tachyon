@@ -23,12 +23,12 @@ class Util {
 class Calc {
 	static norm(vtc, i) {
 		let
-		startA = i * axes,
+			startA = i * axes,
 			startB = (i + 1) * axes,
 			startC = (i + 2) * axes;
 
 		let
-		a = vec3.fromValues(vtc[startA], vtc[startA + 1], vtc[startA + 2]),
+			a = vec3.fromValues(vtc[startA], vtc[startA + 1], vtc[startA + 2]),
 			b = vec3.fromValues(vtc[startB], vtc[startB + 1], vtc[startB + 2]),
 			c = vec3.fromValues(vtc[startC], vtc[startC + 1], vtc[startC + 2]);
 
