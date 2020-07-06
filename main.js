@@ -9,7 +9,7 @@ const
 	};
 
 class Util {
-	rd(name) {
+	static rd(name) {
 		var req = new XMLHttpRequest();
 		req.open('GET', name, false);
 		req.send(null);
@@ -19,7 +19,7 @@ class Util {
 		}
 	}
 
-	calcNorm(vtc, i) {
+	static calcNorm(vtc, i) {
 		let
 			startA = i * axes,
 			startB = (i + 1) * axes,
@@ -46,12 +46,10 @@ class Util {
 	}
 };
 
-var util = new Util;
-
 class Ld {
-	vtc(name) {
+	static vtc(name) {
 		let data = [];
-		for (let l of util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
 				tok.push(_);
@@ -70,9 +68,9 @@ class Ld {
 		return data;
 	}
 
-	idc(name, type) {
+	static idc(name, type) {
 		let data = [];
-		for (let l of util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
 				tok.push(_);
@@ -93,9 +91,9 @@ class Ld {
 		return data;
 	}
 
-	norm(name) {
+	static norm(name) {
 		let data = [];
-		for (let l of util.rd(name + ".obj").split("\n")) {
+		for (let l of Util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
 				tok.push(_);
@@ -133,8 +131,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// shader
 	const
-		shadVtxTxt = util.rd("shad.vs"),
-		shadFragTxt = util.rd("shad.fs");
+		shadVtxTxt = Util.rd("shad.vs"),
+		shadFragTxt = Util.rd("shad.fs");
 
 	// vertex
 	var shadVtx = gl.createShader(gl.VERTEX_SHADER);
@@ -172,20 +170,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	gl.useProgram(prog);
 
-	let ld = new Ld;
-
 	// VBO
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	var vtc = ld.vtc("cube");
+	var vtc = Ld.vtc("cube");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	var idc = ld.idc("cube", type.VTX);
+	var idc = Ld.idc("cube", type.VTX);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
@@ -197,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = ld.norm("cube");
+	var norm = Ld.norm("cube");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
