@@ -45,7 +45,6 @@ var util = new Util;
 class Ld {
 	vtc(name) {
 		let data = [];
-
 		for (let l of util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
@@ -66,8 +65,20 @@ class Ld {
 	}
 
 	idc(name) {
-		let data = [];
+		// check normals existence
+		let norm = false;
+		for (let l of util.rd(name + ".obj").split("\n")) {
+			let tok = [];
+			for (let _ of l.split(" ")) {
+				tok.push(_);
+			}
 
+			if (tok[0] == "vn") {
+				norm = true;
+			}
+		}
+
+		let data = [];
 		for (let l of util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
@@ -79,7 +90,12 @@ class Ld {
 				idc.shift();
 
 				for (let i = 0; i < 3; i++) {
-					data.push(idc[i] - 1);
+					if (norm) {
+						let coor = idc[i].split("//");
+						tok.push(coor[0] - 1);
+					} else {
+						data.push(idc[i] - 1);
+					}
 				}
 			}
 		}
@@ -89,7 +105,6 @@ class Ld {
 
 	norm(name) {
 		let data = [];
-
 		for (let l of util.rd(name + ".obj").split("\n")) {
 			let tok = [];
 			for (let _ of l.split(" ")) {
@@ -192,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = ld.norm("tachyon");
+	var norm = ld.norm("cube");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
