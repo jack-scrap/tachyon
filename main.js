@@ -15,7 +15,7 @@ class Util {
 
 	calcNorm(vtc, i) {
 		let
-		startA = i * axes,
+			startA = i * axes,
 			startB = (i + 1) * axes,
 			startC = (i + 2) * axes;
 
