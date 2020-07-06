@@ -38,7 +38,32 @@ function calcNorm(vtc, i) {
 	return prod;
 }
 
+function rdVtc(name) {
+	let data = [];
+
+	for (let l of rd(name + ".obj").split("\n")) {
+		let tok = [];
+		for (let _ of l.split(" ")) {
+			tok.push(_);
+		}
+
+		if (tok[0] == "v") {
+			let v = tok;
+
+			v.shift();
+
+			for (let i = 0; i < 3; i++) {
+				data.push(v[i]);
+			}
+		}
+	}
+
+	return data;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
+	alert(rdVtc("asdf"));
+
 	// initialize
 	const canv = document.getElementById('disp');
 	var gl = canv.getContext('webgl');
