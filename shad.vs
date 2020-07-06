@@ -9,10 +9,13 @@ uniform mat4
 	view,
 	proj;
 
-varying vec3 _pos;
+varying vec3
+	_posFrag,
+	_norm;
 
 void main() {
 	gl_Position = proj * view * model * vec4(pos, 1.0);
 
-	_pos = pos;
+	_posFrag = gl_Position.xyz;
+	_norm = normalize(norm);
 }
