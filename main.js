@@ -90,11 +90,11 @@ class Ld {
 				idc.shift();
 
 				for (let i = 0; i < 3; i++) {
-					if (norm) {
-						let coor = idc[i].split("//");
-						data.push(coor[0] - 1);
+					let coor = idc[i].split("//");
 
-						let idxNorm = coor[1] - 1;
+					if (norm) {
+						let idx = coor[0] - 1;
+						data.push(idx);
 					} else {
 						data.push(idc[i] - 1);
 					}
