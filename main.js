@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	gl.useProgram(prog);
 
-	// VBO
+	// position
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
@@ -185,15 +185,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
-	var attrLoc = gl.getAttribLocation(prog, 'pos');
-	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-	gl.enableVertexAttribArray(attrLoc);
+	var attrPos = gl.getAttribLocation(prog, 'pos');
+	gl.vertexAttribPointer(attrPos, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+	gl.enableVertexAttribArray(attrPos);
 
 	// normal
 	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	// normal
 	var
 		idcNorm = Ld.idc('cube', 1),
 
