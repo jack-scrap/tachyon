@@ -199,10 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		norm = Ld.norm('cube'),
 		idxedNorm = [];
 	for (let i = 0; i < idcNorm.length; i++) {
-		let idx = idcNorm[i] * 3;
+		let v = idcNorm[i] * 3;
 
 		for (let i = 0; i < 3; i++) {
-			idxedNorm.push(norm[idx + i]);
+			idxedNorm.push(norm[v + i]);
 		}
 	}
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(idxedNorm), gl.STATIC_DRAW);
