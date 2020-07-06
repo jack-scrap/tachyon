@@ -92,7 +92,9 @@ class Ld {
 				for (let i = 0; i < 3; i++) {
 					if (norm) {
 						let coor = idc[i].split("//");
-						tok.push(coor[0] - 1);
+						data.push(coor[0] - 1);
+
+						let idxNorm = coor[1] - 1;
 					} else {
 						data.push(idc[i] - 1);
 					}
@@ -203,17 +205,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	gl.vertexAttribPointer(attrLoc, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
 	gl.enableVertexAttribArray(attrLoc);
 
-	// normal
-	var nbo = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
+// 	// normal
+// 	var nbo = gl.createBuffer();
+// 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = ld.norm("cube");
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
+// 	var norm = ld.norm("cube");
+// 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
-	// normal
-	var attrNorm = gl.getAttribLocation(prog, 'norm');
-	gl.vertexAttribPointer(attrNorm, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-	gl.enableVertexAttribArray(attrNorm);
+	// // normal
+	// var attrNorm = gl.getAttribLocation(prog, 'norm');
+	// gl.vertexAttribPointer(attrNorm, 3, gl.FLOAT, gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+	// gl.enableVertexAttribArray(attrNorm);
 
 	// matrix
 	var
