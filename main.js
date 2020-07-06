@@ -2,107 +2,113 @@ const
 	axes = 3,
 	triVtc = 3;
 
-function rd(name) {
-	var req = new XMLHttpRequest();
-	req.open('GET', name, false);
-	req.send(null);
+class Util {
+	rd(name) {
+		var req = new XMLHttpRequest();
+		req.open('GET', name, false);
+		req.send(null);
 
-	if (req.status == 200) {
-		return req.responseText;
+		if (req.status == 200) {
+			return req.responseText;
+		}
 	}
-}
 
-function calcNorm(vtc, i) {
-	let
+	calcNorm(vtc, i) {
+		let
 		startA = i * axes,
-		startB = (i + 1) * axes,
-		startC = (i + 2) * axes;
+			startB = (i + 1) * axes,
+			startC = (i + 2) * axes;
 
-	let
+		let
 		a = vec3.fromValues(vtc[startA], vtc[startA + 1], vtc[startA + 2]),
-		b = vec3.fromValues(vtc[startB], vtc[startB + 1], vtc[startB + 2]),
-		c = vec3.fromValues(vtc[startC], vtc[startC + 1], vtc[startC + 2]);
+			b = vec3.fromValues(vtc[startB], vtc[startB + 1], vtc[startB + 2]),
+			c = vec3.fromValues(vtc[startC], vtc[startC + 1], vtc[startC + 2]);
 
-	let v = [
-		vec3.create(),
-		vec3.create()
-	];
-	vec3.sub(v[0], b, a);
-	vec3.sub(v[1], c, a);
+		let v = [
+			vec3.create(),
+			vec3.create()
+		];
+		vec3.sub(v[0], b, a);
+		vec3.sub(v[1], c, a);
 
-	let prod = vec3.create();
-	vec3.cross(prod, v[0], v[1]);
+		let prod = vec3.create();
+		vec3.cross(prod, v[0], v[1]);
 
-	vec3.normalize(prod, prod);
+		vec3.normalize(prod, prod);
 
-	return prod;
-}
+		return prod;
+	}
+};
 
-function rdVtc(name) {
-	let data = [];
+var util = new Util;
 
-	for (let l of rd(name + ".obj").split("\n")) {
-		let tok = [];
-		for (let _ of l.split(" ")) {
-			tok.push(_);
-		}
+class Ld {
+	vtc(name) {
+		let data = [];
 
-		if (tok[0] == "v") {
-			let vtc = tok;
-			vtc.shift();
+		for (let l of util.rd(name + ".obj").split("\n")) {
+			let tok = [];
+			for (let _ of l.split(" ")) {
+				tok.push(_);
+			}
 
-			for (let i = 0; i < 3; i++) {
-				data.push(vtc[i]);
+			if (tok[0] == "v") {
+				let vtc = tok;
+				vtc.shift();
+
+				for (let i = 0; i < 3; i++) {
+					data.push(vtc[i]);
+				}
 			}
 		}
+
+		return data;
 	}
 
-	return data;
-}
+	idc(name) {
+		let data = [];
 
-function rdIdc(name) {
-	let data = [];
+		for (let l of util.rd(name + ".obj").split("\n")) {
+			let tok = [];
+			for (let _ of l.split(" ")) {
+				tok.push(_);
+			}
 
-	for (let l of rd(name + ".obj").split("\n")) {
-		let tok = [];
-		for (let _ of l.split(" ")) {
-			tok.push(_);
-		}
+			if (tok[0] == "f") {
+				let idc = tok;
+				idc.shift();
 
-		if (tok[0] == "f") {
-			let idc = tok;
-			idc.shift();
-
-			for (let i = 0; i < 3; i++) {
-				data.push(idc[i] - 1);
+				for (let i = 0; i < 3; i++) {
+					data.push(idc[i] - 1);
+				}
 			}
 		}
+
+		return data;
 	}
 
-	return data;
-}
+	norm(name) {
+		let data = [];
 
-function rdNorm(name) {
-	let data = [];
+		for (let l of util.rd(name + ".obj").split("\n")) {
+			let tok = [];
+			for (let _ of l.split(" ")) {
+				tok.push(_);
+			}
 
-	for (let l of rd(name + ".obj").split("\n")) {
-		let tok = [];
-		for (let _ of l.split(" ")) {
-			tok.push(_);
-		}
+			if (tok[0] == "vn") {
+				let norm = tok;
+				norm.shift();
 
-		if (tok[0] == "vn") {
-			let norm = tok;
-			norm.shift();
-
-			for (let i = 0; i < 3; i++) {
-				data.push(norm[i] - 1);
+				for (let i = 0; i < 3; i++) {
+					data.push(norm[i] - 1);
+				}
 			}
 		}
-	}
 
-	return data;
-}
+		return data;
+	}
+};
 
 document.addEventListener("DOMContentLoaded", function() {
 	// initialize
@@ -122,8 +128,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// shader
 	const
-		shadVtxTxt = rd("shad.vs"),
-		shadFragTxt = rd("shad.fs");
+		shadVtxTxt = util.rd("shad.vs"),
+		shadFragTxt = util.rd("shad.fs");
 
 	// vertex
 	var shadVtx = gl.createShader(gl.VERTEX_SHADER);
@@ -161,18 +167,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	gl.useProgram(prog);
 
+	let ld = new Ld;
+
 	// VBO
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	var vtc = rdVtc("tachyon");
+	var vtc = ld.vtc("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	var idc = rdIdc("tachyon");
+	var idc = ld.idc("tachyon");
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
@@ -184,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var nbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
-	var norm = rdNorm("tachyon");
+	var norm = ld.norm("tachyon");
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(norm), gl.STATIC_DRAW);
 
 	// normal
