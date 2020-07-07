@@ -7,11 +7,11 @@ vec3
 	colObj = vec3(0.871, 0.749, 0.529);
 
 varying vec3
-	_posFrag,
+	_pos,
 	_norm;
 
 void main() {
-	vec3 dirLight = normalize(posLight - _posFrag);
+	vec3 dirLight = normalize(posLight - _pos);
 
 	float diff = max(dot(_norm, dirLight), 0.0);
 
