@@ -12,7 +12,7 @@ varying vec3
 void main() {
 	vec3 dirLight = normalize(posLight - _posFrag);
 
-	float diff = max(dot(_norm, dirLight), 0.1);
+	float diff = max(dot(_norm, dirLight), 0.0);
 
 	vec3 result = (diff * colLight) * colObj;
 
