@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	mat4.lookAt(
 		view,
 		[
-			0, 5, -5
+			0, 15 / 3, -40 / 3
 		], [
 			0, 0, 0
 		], [
