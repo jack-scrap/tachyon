@@ -176,14 +176,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 
-	var vtc = Ld.vtc('cube');
+	var vtc = Ld.vtc('tachyon');
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vtc), gl.STATIC_DRAW);
 
 	// indices
 	var ibo = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
 
-	var idc = Ld.idc('cube', type.VTX);
+	var idc = Ld.idc('tachyon', type.VTX);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(idc), gl.STATIC_DRAW);
 
 	// position
@@ -196,9 +196,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, nbo);
 
 	var
-		idcNorm = Ld.idc('cube', type.NORM),
+		idcNorm = Ld.idc('tachyon', type.NORM),
 
-		norm = Ld.norm('cube'),
+		norm = Ld.norm('tachyon'),
 		idxedNorm = [];
 	for (let i = 0; i < idcNorm.length; i++) {
 		let v = idcNorm[i] * 3;
