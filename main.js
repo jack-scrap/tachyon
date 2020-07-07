@@ -248,12 +248,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	gl.uniformMatrix4fv(uniView, gl.FALSE, view);
 	gl.uniformMatrix4fv(uniProj, gl.FALSE, proj);
 
-	let i = 1;
+	let
+		i = 1,
+		tmp = 0;
 	function draw() {
 		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 
-		mat4.rotate(rot, id, i, [0, 1, 0]);
+		mat4.rotate(rot, id, i + tmp, [0, 1, 0]);
 		mat4.mul(model, rot, id);
 		gl.uniformMatrix4fv(uniModel, gl.FALSE, model);
 
@@ -277,13 +279,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	document.addEventListener('mouseup', (e) => {
 		down = false;
+
+		i += tmp;
+		tmp = 0;
 	});
 
 	document.addEventListener('mousemove', (e) => {
 		if (down) {
 			curr = e.clientX;
 			d = curr - start;
-			i = d / 100;
+			tmp = d / 100;
 		}
 	});
 });
