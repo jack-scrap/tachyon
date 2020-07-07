@@ -3,7 +3,7 @@ precision mediump float;
 vec3
 	posLight = vec3(-1.0, -1.0, -1.0),
 	colLight = vec3(1.0),
-	colObj = vec3(1.0);
+	colObj = vec3(0.871, 0.749, 0.529);
 
 varying vec3
 	_posFrag,
